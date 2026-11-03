@@ -3,88 +3,165 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>漢字チャレンジ 漢検7〜5級</title>
 <style>
-:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fff8ec;--card:#fff;--ink:#2b2438;--sub:#7a7390;--main:#ff7a45;--main2:#ffb347;--ok:#2fb86b;--ng:#e5484d;--line:#eadfce}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1a28;--card:#2a2639;--ink:#f4f0ff;--sub:#a59fbd;--line:#3d3753}}
-:root[data-theme="dark"]{--bg:#1d1a28;--card:#2a2639;--ink:#f4f0ff;--sub:#a59fbd;--line:#3d3753}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#7fd0ff;--card:#ffffff;--ink:#1c2a4a;--sub:#ffffff;--line:#1c2a4a;--main:#ff7a45;--main2:#ffb347;--ok:#2fb86b;--ng:#e5484d}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
-#app{max-width:480px;margin:0 auto;padding:16px;min-height:100vh}
-.scr{display:none;flex-direction:column;gap:14px}.scr.on{display:flex}
-h1{margin:12px 0 0;text-align:center;font-size:34px;letter-spacing:2px}
-h1 span{color:var(--main)}
-.sub{text-align:center;color:var(--sub);margin:0}
-.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px}
-.card h3{margin:0 0 10px;font-size:15px;color:var(--sub)}
-.row{display:flex;gap:8px;flex-wrap:wrap}
-.chip{flex:1;min-width:70px;padding:12px 6px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:700;font-size:16px}
-.chip.sel{background:var(--main);border-color:var(--main);color:#fff}
-#g-row .chip{flex:1 1 44%;font-size:18px;padding:14px 6px}
-#g-row .chip small{font-weight:400;font-size:12px;opacity:.8}
-.big{padding:18px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--main),var(--main2));color:#fff;font:inherit;font-size:22px;font-weight:800;box-shadow:0 5px 0 rgba(0,0,0,.18)}
-.big:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
-.top{display:flex;justify-content:space-between;align-items:center;font-weight:800}
-.hearts{font-size:20px;letter-spacing:2px}
-.bar{height:12px;border-radius:8px;background:var(--line);overflow:hidden}
-.bar i{display:block;height:100%;width:100%;background:var(--ok);transition:width .1s linear,background .3s}
-.q{text-align:center;padding:26px 10px}
-.tag{font-size:13px;color:var(--sub);font-weight:700}
-.word{font-size:52px;font-weight:800;margin:8px 0;line-height:1.2;word-break:keep-all}
-.hint{color:var(--sub);font-size:15px}
-.ch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.ch button{padding:18px 6px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:22px;font-weight:700;min-height:64px}
-.ch button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
-.ch button.ng{background:var(--ng);border-color:var(--ng);color:#fff}
-.ch button:disabled{opacity:1}
-.fb{text-align:center;min-height:52px;font-weight:800;font-size:18px}
-.fb.ok{color:var(--ok)}.fb.ng{color:var(--ng)}
-.stars{font-size:46px;text-align:center}
-.score{font-size:48px;font-weight:800;text-align:center;color:var(--main)}
-.miss{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:18px}
-.miss span:last-child{color:var(--sub)}
-.pop{animation:pop .35s}@keyframes pop{50%{transform:scale(1.08)}}
-.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
-/* ===== 冒険アクション風 ===== */
-:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#7fd0ff;--card:#fff;--ink:#1c2a4a;--sub:#fff;--line:#1c2a4a}
+html,body{margin:0;min-height:100%;color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
 html{min-height:100%;background:radial-gradient(ellipse 70px 24px at 12% 9%,#fff 96%,transparent 100%),radial-gradient(ellipse 50px 18px at 20% 11%,#fff 96%,transparent 100%),radial-gradient(ellipse 80px 26px at 82% 18%,#fff 96%,transparent 100%),radial-gradient(ellipse 55px 20px at 74% 20%,#fff 96%,transparent 100%),radial-gradient(ellipse 90px 28px at 30% 52%,#fff 96%,transparent 100%),linear-gradient(#5ebd2f,#5ebd2f) bottom/100% 18px no-repeat,linear-gradient(#2f93f0,#7fd0ff 50%,#d6f3ff) fixed}
 body{background:transparent}
-#app{padding-bottom:40px}
-h1{color:#fff;font-weight:900;font-size:38px;text-shadow:0 3px 0 #1c2a4a,3px 0 0 #1c2a4a,-3px 0 0 #1c2a4a,0 -3px 0 #1c2a4a,3px 3px 0 #1c2a4a,-3px 3px 0 #1c2a4a,3px -3px 0 #1c2a4a,-3px -3px 0 #1c2a4a;animation:bob 2s ease-in-out infinite}
+#app{max-width:480px;margin:0 auto;padding:16px 16px 40px;min-height:100vh}
+.scr{display:none;flex-direction:column;gap:14px}.scr.on{display:flex}
+
+h1{margin:12px 0 0;text-align:center;font-size:36px;letter-spacing:2px;color:#fff;font-weight:900;text-shadow:0 3px 0 #1c2a4a,3px 0 0 #1c2a4a,-3px 0 0 #1c2a4a,0 -3px 0 #1c2a4a,3px 3px 0 #1c2a4a,-3px 3px 0 #1c2a4a,3px -3px 0 #1c2a4a,-3px -3px 0 #1c2a4a;animation:bob 2s ease-in-out infinite}
 h1 span{color:#ffd400}
 @keyframes bob{50%{transform:translateY(-5px)}}
-.sub{color:#fff;font-weight:800;text-shadow:0 2px 0 #1c2a4a}
-.card{border:4px solid #1c2a4a;border-radius:22px;box-shadow:0 6px 0 rgba(28,42,74,.35)}
-.card h3{color:#1c2a4a;font-weight:800}
-.chip{border:3px solid #1c2a4a;background:#fff;color:#1c2a4a;border-radius:16px;font-weight:800;box-shadow:0 4px 0 rgba(28,42,74,.4)}
+.sub{text-align:center;color:#fff;margin:0;font-weight:800;text-shadow:0 2px 0 #1c2a4a}
+
+.card{background:#ffffff;border:4px solid #1c2a4a;border-radius:22px;padding:16px;box-shadow:0 6px 0 rgba(28,42,74,.35)}
+.card h3{margin:0 0 12px;font-size:16px;color:#1c2a4a;font-weight:800}
+
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.chip{flex:1;min-width:70px;padding:12px 6px;border-radius:16px;border:3px solid #1c2a4a;background:#fff;color:#1c2a4a;font:inherit;font-weight:800;font-size:16px;box-shadow:0 4px 0 rgba(28,42,74,.4);cursor:pointer}
 .chip:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(28,42,74,.4)}
-#g-row .chip{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+#g-row .chip{flex:1 1 44%;font-size:17px;padding:12px 6px;color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.4)}
 #g-row .chip[data-m="read"]{background:#e60012}
 #g-row .chip[data-m="write"]{background:#1f6fe5}
+#g-row .chip small{font-weight:700;font-size:12px;display:block;margin-top:2px;opacity:.95}
 #a-row .chip.sel{background:#ffd400;color:#5a3600;border-color:#1c2a4a}
-.big{background:linear-gradient(#ffe45c,#ffb800);color:#5a3600;border:4px solid #1c2a4a;box-shadow:0 6px 0 rgba(28,42,74,.45);text-shadow:0 1px 0 rgba(255,255,255,.6)}
-.big:active{box-shadow:0 2px 0 rgba(28,42,74,.45)}
-.top{background:#1c2a4a;color:#fff;border:3px solid #fff;border-radius:18px;padding:8px 12px;gap:6px}
+
+.big{padding:18px;border:4px solid #1c2a4a;border-radius:18px;background:linear-gradient(#ffe45c,#ffb800);color:#5a3600;font:inherit;font-size:22px;font-weight:800;box-shadow:0 6px 0 rgba(28,42,74,.45);text-shadow:0 1px 0 rgba(255,255,255,.6);cursor:pointer}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(28,42,74,.45)}
+
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800;background:#1c2a4a;color:#fff;border:3px solid #fff;border-radius:18px;padding:8px 12px;gap:6px}
+.hearts{font-size:20px;letter-spacing:2px}
 #sc::before{content:"🪙 "}
-.bar{height:16px;border:3px solid #fff;background:#1c2a4a;border-radius:10px}
-.tag{display:inline-block;background:#ffd400;color:#5a3600;border:2px solid #b37400;border-radius:999px;padding:2px 12px}
-.word{color:#1c2a4a;font-weight:900}
-.hint{color:#4a5a7a;font-weight:700}
-.ch button{border:3px solid #1c2a4a;box-shadow:0 5px 0 rgba(28,42,74,.4);color:#1c2a4a;background:#fff;border-radius:18px;font-weight:800}
-.ch button:active{transform:translateY(3px)}
-.ch button.ok{background:#3ecf4a;border-color:#157a1f;color:#fff}
-.ch button.ng{background:#ff4b4b;border-color:#8a000a;color:#fff}
-.fb{background:#fff;border:3px solid #1c2a4a;border-radius:16px;padding:10px;min-height:52px;display:flex;align-items:center;justify-content:center}
+
+.bar{height:16px;border:3px solid #fff;background:#1c2a4a;border-radius:10px;overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:#3ecf4a;transition:width .1s linear,background .3s}
+
+/* 問題表示エリア：高コントラスト設計 */
+.q{text-align:center;padding:22px 12px;background:#ffffff !important;border:4px solid #1c2a4a !important;box-shadow:0 8px 0 rgba(0,0,0,.25) !important}
+.tag{display:inline-block;background:#ffd400;color:#5a3600;border:2px solid #b37400;border-radius:999px;padding:4px 14px;font-size:13px;font-weight:800}
+.word{font-size:52px;font-weight:900;margin:12px 0;line-height:1.2;word-break:keep-all;color:#111827;text-shadow:1px 1px 0 #fff}
+.hint{color:#4b5563;font-size:16px;font-weight:700}
+
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ch button{padding:16px 6px;border-radius:18px;border:3px solid #1c2a4a;background:#ffffff;color:#111827;font:inherit;font-size:24px;font-weight:800;min-height:64px;box-shadow:0 5px 0 rgba(28,42,74,.4);cursor:pointer}
+.ch button:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(28,42,74,.4)}
+.ch button.ok{background:#3ecf4a !important;border-color:#157a1f !important;color:#fff !important;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.ch button.ng{background:#ff4b4b !important;border-color:#8a000a !important;color:#fff !important;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+.ch button:disabled{opacity:1}
+
+.fb{background:#fff;border:3px solid #1c2a4a;border-radius:16px;padding:10px;min-height:52px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px}
 .fb:empty{visibility:hidden}
 .fb.ok{color:#14862a}.fb.ng{color:#d0021b}
-.stars{filter:drop-shadow(0 3px 0 #1c2a4a)}
-.score{color:#ffd400;text-shadow:0 3px 0 #1c2a4a,3px 0 0 #1c2a4a,-3px 0 0 #1c2a4a,0 -3px 0 #1c2a4a}
-.miss{border-bottom:2px dashed #b9c4d8;color:#1c2a4a}.miss span:last-child{color:#5a6a8a}
+
+.stars{font-size:46px;text-align:center;filter:drop-shadow(0 3px 0 #1c2a4a)}
+.score{font-size:48px;font-weight:800;text-align:center;color:#ffd400;text-shadow:0 3px 0 #1c2a4a,3px 0 0 #1c2a4a,-3px 0 0 #1c2a4a,0 -3px 0 #1c2a4a}
+.miss{display:flex;justify-content:space-between;padding:8px 0;border-bottom:2px dashed #b9c4d8;color:#1c2a4a;font-size:18px;font-weight:700}
+.miss span:last-child{color:#4b5563}
+
+.pop{animation:pop .35s}@keyframes pop{50%{transform:scale(1.08)}}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+
+/* ===== 各「国」テーマ別スタイル ===== */
+/* 🎩 帽子の国 (Cap Kingdom): 月夜と霧のパープル */
+body[data-world="4read"] {
+  background: radial-gradient(circle at 80% 20%, #fff9d6 0%, #d8c3ff 15%, transparent 16%),
+              radial-gradient(ellipse at 50% 80%, rgba(255,255,255,0.15), transparent 70%),
+              linear-gradient(#0e0b16, #241935 60%, #3e285c) fixed !important;
+}
+body[data-world="4read"] .top { background: #2a1b4e; border-color: #9d59ff; }
+body[data-world="4read"] .tag { background: #c496ff; color: #20004d; border-color: #8c42f5; }
+
+/* 🦖 滝の国 (Cascade Kingdom): 大自然の岩山と深緑 */
+body[data-world="4write"] {
+  background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.3), transparent 60%),
+              linear-gradient(180deg, #1b5e20 0%, #2e7d32 30%, #0288d1 75%, #01579b 100%) fixed !important;
+}
+body[data-world="4write"] .top { background: #0f3813; border-color: #81c784; }
+body[data-world="4write"] .tag { background: #a5d6a7; color: #003300; border-color: #388e3c; }
+
+/* 🌲 森の国 (Wooded Kingdom): 機械と神秘の森林 */
+body[data-world="5read"] {
+  background: radial-gradient(circle at 20% 30%, rgba(129,199,132,0.3) 0%, transparent 40%),
+              linear-gradient(180deg, #0d301e 0%, #1b4d3e 50%, #2c3e35 100%) fixed !important;
+}
+body[data-world="5read"] .top { background: #0b2115; border-color: #4db6ac; }
+body[data-world="5read"] .tag { background: #80cbc4; color: #00251a; border-color: #00897b; }
+
+/* 🏜️ 砂の国 (Sand Kingdom): 黄金の砂漠と夕焼けの遺跡 */
+body[data-world="5write"] {
+  background: radial-gradient(circle at 50% 20%, #ffe082 0%, #ff8f00 25%, transparent 26%),
+              linear-gradient(180deg, #6a1b9a 0%, #ad1457 35%, #f57c00 70%, #ffb300 100%) fixed !important;
+}
+body[data-world="5write"] .top { background: #3e1604; border-color: #ffb74d; }
+body[data-world="5write"] .tag { background: #ffe082; color: #4e2600; border-color: #ff8f00; }
+
+/* 🏙️ 都市の国 (Metro Kingdom): 煌めく夜景の巨大都市 */
+body[data-world="6read"] {
+  background: linear-gradient(180deg, #090a0f 0%, #121829 40%, #1a233a 100%) fixed !important;
+}
+body[data-world="6read"] .top { background: #101424; border-color: #00e5ff; }
+body[data-world="6read"] .tag { background: #00e5ff; color: #002b36; border-color: #00b8d4; }
+
+/* 🌊 海の国 (Seaside Kingdom): 常夏のコバルトブルービーチ */
+body[data-world="6write"] {
+  background: radial-gradient(ellipse at 50% 10%, rgba(255,255,255,0.6), transparent 50%),
+              linear-gradient(180deg, #00b0ff 0%, #00e5ff 40%, #0097a7 80%, #006064 100%) fixed !important;
+}
+body[data-world="6write"] .top { background: #00363a; border-color: #80d8ff; }
+body[data-world="6write"] .tag { background: #80d8ff; color: #002733; border-color: #0091ea; }
+
+/* ❄️ 雪の国 (Snow Kingdom): 静寂の銀世界と氷晶 */
+body[data-world="7read"] {
+  background: radial-gradient(circle at 50% 30%, #ffffff 0%, rgba(224,247,250,0.8) 40%, transparent 60%),
+              linear-gradient(180deg, #b2ebf2 0%, #80deea 40%, #4dd0e1 80%, #00acc1 100%) fixed !important;
+}
+body[data-world="7read"] .top { background: #006064; border-color: #e0f7fa; }
+body[data-world="7read"] .tag { background: #e0f7fa; color: #004d40; border-color: #26a69a; }
+
+/* 🌋 料理の国 (Luncheon Kingdom): ポップなマグマとグラデーションの火山 */
+body[data-world="7write"] {
+  background: radial-gradient(circle at 30% 20%, #ff80ab 0%, transparent 40%),
+              linear-gradient(180deg, #ff4081 0%, #ff6e40 35%, #ffab40 70%, #ffd740 100%) fixed !important;
+}
+body[data-world="7write"] .top { background: #880e4f; border-color: #ff80ab; }
+body[data-world="7write"] .tag { background: #ffea00; color: #4a0000; border-color: #ff6d00; }
+
+/* 🌕 月の国 (Moon Kingdom): 宇宙空間と神秘的な月面 */
+body[data-world="8read"] {
+  background: radial-gradient(circle at 75% 25%, #ffffff 0%, #e0e0e0 8%, transparent 9%),
+              radial-gradient(ellipse at 50% 70%, rgba(255,255,255,0.08), transparent 80%),
+              linear-gradient(180deg, #050508 0%, #10101a 50%, #1a1a2e 100%) fixed !important;
+}
+body[data-world="8read"] .top { background: #161625; border-color: #ffffff; }
+body[data-world="8read"] .tag { background: #ffffff; color: #0f0f1d; border-color: #b0bec5; }
+
+/* 🍄 キノコ王国 (Mushroom Kingdom): 青空とポップなお城ワールド */
+body[data-world="8write"] {
+  background: radial-gradient(ellipse 70px 24px at 15% 10%,#fff 96%,transparent 100%),
+              radial-gradient(ellipse 80px 26px at 80% 15%,#fff 96%,transparent 100%),
+              linear-gradient(180deg, #29b6f6 0%, #81d4fa 50%, #a5d6a7 85%, #66bb6a 100%) fixed !important;
+}
+body[data-world="8write"] .top { background: #1b5e20; border-color: #ffeb3b; }
+body[data-world="8write"] .tag { background: #ffeb3b; color: #33691e; border-color: #fbc02d; }
 </style></head><body>
 <div id="app">
 <section class="scr on" id="s-start">
 <h1>漢字<span>チャレンジ</span></h1>
 <p class="sub">🪙 漢字をマスターして、コインをあつめよう！</p>
 <div class="card"><h3>コースをタップするとスタート！</h3><div class="row" id="g-row">
-<button class="chip" data-g="4" data-m="read">7級　よみ</button><button class="chip" data-g="4" data-m="write">7級　かき</button><button class="chip" data-g="5" data-m="read">6級　よみ</button><button class="chip" data-g="5" data-m="write">6級　かき</button><button class="chip" data-g="6" data-m="read">5級　よみ</button><button class="chip" data-g="6" data-m="write">5級　かき</button></div></div>
+<button class="chip" data-g="4" data-m="read">🎩 帽子の国<br><small>7級 よみ</small></button>
+<button class="chip" data-g="4" data-m="write">🦖 滝の国<br><small>7級 かき</small></button>
+<button class="chip" data-g="5" data-m="read">🌲 森の国<br><small>6級 よみ</small></button>
+<button class="chip" data-g="5" data-m="write">🏜️ 砂の国<br><small>6級 かき</small></button>
+<button class="chip" data-g="6" data-m="read">🏙️ 都市の国<br><small>5級 よみ</small></button>
+<button class="chip" data-g="6" data-m="write">🌊 海の国<br><small>5級 かき</small></button>
+<button class="chip" data-g="7" data-m="read">❄️ 雪の国<br><small>4級 よみ</small></button>
+<button class="chip" data-g="7" data-m="write">🌋 料理の国<br><small>4級 かき</small></button>
+<button class="chip" data-g="8" data-m="read">🌕 月の国<br><small>3級 よみ</small></button>
+<button class="chip" data-g="8" data-m="write">🍄 キノコ王国<br><small>3級 かき</small></button>
+</div></div>
 
 <div class="card"><h3>おと・バイブ</h3><div class="row" id="a-row"><button class="chip sel" data-a="bgm">🎵 おんがく</button><button class="chip sel" data-a="se">🔊 こうかおん</button><button class="chip sel" data-a="vb">📳 バイブ</button></div></div>
 
@@ -110,85 +187,368 @@ h1 span{color:#ffd400}
 <button class="chip" id="home" style="flex:none">タイトルへ</button>
 </section>
 </div>
+
 <script>
+const WORLD_NAMES = {
+  "4read": "帽子の国",
+  "4write": "滝の国",
+  "5read": "森の国",
+  "5write": "砂の国",
+  "6read": "都市の国",
+  "6write": "海の国",
+  "7read": "雪の国",
+  "7write": "料理の国",
+  "8read": "月の国",
+  "8write": "キノコ王国"
+};
+
 const D={
 4:"勇気,ゆうき;約束,やくそく;失敗,しっぱい;努力,どりょく;課題,かだい;景色,けしき;競争,きょうそう;結果,けっか;季節,きせつ;材料,ざいりょう;順番,じゅんばん;満足,まんぞく;清潔,せいけつ;笑顔,えがお;最近,さいきん;栄養,えいよう;希望,きぼう;協力,きょうりょく;健康,けんこう;試験,しけん;説明,せつめい;伝える,つたえる;変化,へんか;老人,ろうじん;録音,ろくおん;散歩,さんぽ;倉庫,そうこ;浅い,あさい;例える,たとえる;初め,はじめ",
 5:"営業,えいぎょう;技術,ぎじゅつ;規則,きそく;義務,ぎむ;禁止,きんし;経験,けいけん;検査,けんさ;現在,げんざい;混雑,こんざつ;構成,こうせい;資源,しげん;示す,しめす;授業,じゅぎょう;述べる,のべる;準備,じゅんび;状況,じょうきょう;情報,じょうほう;政治,せいじ;製品,せいひん;絶対,ぜったい;増える,ふえる;賛成,さんせい;提案,ていあん;程度,ていど;輸出,ゆしゅつ;永遠,えいえん;得意,とくい;貿易,ぼうえき;応援,おうえん;確かめる,たしかめる;過去,かこ;留学,りゅうがく",
-6:"異なる,ことなる;宇宙,うちゅう;縮む,ちぢむ;天皇,てんのう;看病,かんびょう;頂上,ちょうじょう;推理,すいり;宣言,せんげん;垂直,すいちょく;郵便,ゆうびん;優勝,ゆうしょう;劇場,げきじょう;納める,おさめる;認める,みとめる;批評,ひひょう;模型,もけい;朗読,ろうどく;補う,おぎなう;尊敬,そんけい;将来,しょうらい;蒸気,じょうき;誠実,せいじつ;探る,さぐる;難民,なんみん;暮らす,くらす;胃腸,いちょう;臓器,ぞうき;担任,たんにん;値段,ねだん;段階,だんかい;存在,そんざい;砂糖,さとう"};
+6:"異なる,ことなる;宇宙,うちゅう;縮む,ちぢむ;天皇,てんのう;看病,かんびょう;頂上,ちょうじょう;推理,すいり;宣言,せんげん;垂直,すいちょく;郵便,ゆうびん;優勝,ゆうしょう;劇場,げきじょう;納める,おさめる;認める,みとめる;批評,ひひょう;模型,もけい;朗読,ろうどく;補う,おぎなう;尊敬,そんけい;将来,しょうらい;蒸気,じょうき;誠実,せいじつ;探る,さぐる;難民,なんみん;暮らす,くらす;胃腸,いちょう;臓器,ぞうき;担任,たんにん;値段,ねだん;段階,だんかい;存在,そんざい;砂糖,さとう",
+7:"圧倒,あっとう;威厳,いげん;仮定,かてい;喚起,かんき;幾何学,きかがく;犠牲,ぎせい;屈折,くっせつ;傾斜,けいしゃ;欠乏,けつぼう;巧妙,こうみょう;削減,さくげん;錯覚,さっかく;暫定,ざんてい;刺戟,しげき;示唆,しさ;遮断,しゃだん;叙情,じょじょう;掌握,しょうあく;掌握,しょうあく;即興,そっきょう;妥協,だきょう;抽象,ちゅうしょう;挑発,ちょうはつ;変遷,へんせん;膨張,ぼうちょう;抑圧,よくあつ;理念,りねん;倫理,りんり;網羅,もうら;崩壊,ほうかい",
+8:"隠蔽,いんぺい;曖昧,あいまい;寛容,かんよう;毅然,きぜん;忌避,きひ;糾弾,きゅうだん;享受,きょうじゅ;懸念,けねん;唆す,そそのかす;卓越,たくえつ;躊躇,ちゅうちょ;緻密,ちみつ;捏造,ねつぞう;破綻,はたん;汎用,はんよう;批難,ひなん;普遍,ふへん;矛盾,むじゅん;捏ねる,こねる;齟齬,そご;脆弱,ぜいじゃく;模索,もさく;免除,めんじょ;歪曲,わいきょく;隠匿,いんとく;客観,きゃっかん;凄惨,せいさん;洞察,どうさつ;貪欲,どんよく;露骨,ろこつ"};
+
 const P=[];for(const g in D)D[g].split(";").forEach(s=>{const[w,r]=s.split(",");P.push({g:+g,w,r})});
 const $=id=>document.getElementById(id);
 const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 let G="4",M="read",Q=[],i=0,score=0,lives=3,combo=0,miss=[],t=10,tm=null,lock=false;
+
 function bestGet(g,m){try{return JSON.parse(localStorage.getItem("kj-bests")||"{}")[g+m]||0}catch(e){return 0}}
 function bestSet(v){try{const o=JSON.parse(localStorage.getItem("kj-bests")||"{}");o[G+M]=v;localStorage.setItem("kj-bests",JSON.stringify(o))}catch(e){}}
 function show(id){document.querySelectorAll(".scr").forEach(e=>e.classList.toggle("on",e.id===id))}
-function home(){bgmStop();show("s-start");document.querySelectorAll("#g-row .chip").forEach(c=>{const b=bestGet(c.dataset.g,c.dataset.m);c.innerHTML=(c.dataset.g==4?"7級":c.dataset.g==5?"6級":"5級")+"　"+(c.dataset.m==="read"?"よみ":"かき")+"<br><small>"+(b?"🏆 "+b+"点":"まだ記録なし")+"</small>"});$("best").textContent=""}
-function pick(row,key,v){row.querySelectorAll(".chip").forEach(c=>c.classList.toggle("sel",c.dataset[key]===v))}
-$("g-row").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;G=b.dataset.g;M=b.dataset.m;$("g-row").querySelectorAll(".chip").forEach(c=>c.classList.toggle("sel",c===b));start()};
 
+function home(){
+  bgmStop();
+  document.body.removeAttribute("data-world");
+  show("s-start");
+  document.querySelectorAll("#g-row .chip").forEach(c=>{
+    const b=bestGet(c.dataset.g,c.dataset.m);
+    const key=c.dataset.g+c.dataset.m;
+    const icons={"4read":"🎩 ","4write":"🦖 ","5read":"🌲 ","5write":"🏜️ ","6read":"🏙️ ","6write":"🌊 ","7read":"❄️ ","7write":"🌋 ","8read":"🌕 ","8write":"🍄 "};
+    const gradeLabel = {4:"7級",5:"6級",6:"5級",7:"4級",8:"3級"}[c.dataset.g];
+    c.innerHTML=icons[key]+WORLD_NAMES[key]+"<br><small>"+gradeLabel+" "+(c.dataset.m==="read"?"よみ":"かき")+" | "+(b?"🏆 "+b+"点":"記録なし")+"</small>"
+  });
+  $("best").textContent=""
+}
+
+$("g-row").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;G=b.dataset.g;M=b.dataset.m;$("g-row").querySelectorAll(".chip").forEach(c=>c.classList.toggle("sel",c===b));start()};
 $("again").onclick=start;$("home").onclick=home;
-function start(){audioInit();sfx("click");bgmStart();
-const pool=P.filter(p=>G==="all"||p.g==+G);
-Q=sh(pool).slice(0,10).map((p,k)=>({...p,m:M==="mix"?(k%2?"write":"read"):M}));
-Q=sh(Q);i=0;score=0;lives=3;combo=0;miss=[];show("s-play");ask()}
+
+function start(){
+  audioInit();sfx("click");bgmStart();
+  document.body.setAttribute("data-world", G + M);
+  const pool=P.filter(p=>G==="all"||p.g==+G);
+  Q=sh(pool).slice(0,10).map((p,k)=>({...p,m:M==="mix"?(k%2?"write":"read"):M}));
+  Q=sh(Q);i=0;score=0;lives=3;combo=0;miss=[];show("s-play");ask()
+}
+
 function hearts(){$("hp").textContent="❤️".repeat(lives)+"🤍".repeat(3-lives)}
+
 function ask(){
-lock=false;const q=Q[i];hearts();$("no").textContent=(i+1)+"/"+Q.length;$("sc").textContent=score+"点";
-$("fb").textContent="";$("fb").className="fb";$("nx").style.display="none";
-$("tg").textContent="漢検"+({4:7,5:6,6:5})[q.g]+"級 ・ "+(q.m==="read"?"よみをえらぼう":"漢字をえらぼう");
-$("wd").textContent=q.m==="read"?q.w:q.r;$("hn").textContent=q.m==="read"?"なんと読む？":"どの漢字？";
-const key=q.m==="read"?"r":"w";
-const ds=sh(P.filter(p=>p[key]!==q[key])).sort((a,b)=>Math.abs(a[key].length-q[key].length)-Math.abs(b[key].length-q[key].length)).slice(0,3);
-const opts=sh([q,...ds]);const box=$("ch");box.innerHTML="";
-opts.forEach(o=>{const b=document.createElement("button");b.textContent=o[key];b.onclick=()=>answer(b,o===q,box);box.appendChild(b)});
-t=10;tick();clearInterval(tm);tm=setInterval(()=>{t-=.1;tick();if(t<=0){clearInterval(tm);answer(null,false,box)}},100)}
-function tick(){if(t>9.9)lastS=11;const s=Math.ceil(t);if(t<=3&&t>0&&s!==lastS){lastS=s;sfx("tick")}const b=$("tb");b.style.width=Math.max(t,0)*10+"%";b.style.background=t>5?"var(--ok)":t>2.5?"var(--main2)":"var(--ng)"}
+  lock=false;const q=Q[i];hearts();$("no").textContent=(i+1)+"/"+Q.length;$("sc").textContent=score+"点";
+  $("fb").textContent="";$("fb").className="fb";$("nx").style.display="none";
+  const wName = WORLD_NAMES[q.g + q.m] || "";
+  const gradeNum = {4:7,5:6,6:5,7:4,8:3}[q.g];
+  $("tg").textContent=wName + " (漢検"+gradeNum+"級・"+(q.m==="read"?"よみ":"かき")+")";
+  $("wd").textContent=q.m==="read"?q.w:q.r;$("hn").textContent=q.m==="read"?"なんと読む？":"どの漢字？";
+  const key=q.m==="read"?"r":"w";
+  const ds=sh(P.filter(p=>p[key]!==q[key])).sort((a,b)=>Math.abs(a[key].length-q[key].length)-Math.abs(b[key].length-q[key].length)).slice(0,3);
+  const opts=sh([q,...ds]);const box=$("ch");box.innerHTML="";
+  opts.forEach(o=>{const b=document.createElement("button");b.textContent=o[key];b.onclick=()=>answer(b,o===q,box);box.appendChild(b)});
+  t=10;tick();clearInterval(tm);tm=setInterval(()=>{t-=.1;tick();if(t<=0){clearInterval(tm);answer(null,false,box)}},100)
+}
+
+function tick(){
+  if(t>9.9)lastS=11;
+  const s=Math.ceil(t);
+  if(t<=3&&t>0&&s!==lastS){lastS=s;sfx("tick")}
+  const b=$("tb");b.style.width=Math.max(t,0)*10+"%";
+  b.style.background=t>5?"#3ecf4a":t>2.5?"#ffb800":"#ff4b4b"
+}
+
 function answer(btn,ok,box){
-if(lock)return;lock=true;clearInterval(tm);const q=Q[i],key=q.m==="read"?"r":"w";
-box.querySelectorAll("button").forEach(b=>{b.disabled=true;if(b.textContent===q[key])b.classList.add("ok")});
-const fb=$("fb");
-if(ok){combo++;const pt=100+Math.round(t*5)+Math.min(combo-1,5)*20;score+=pt;fb.className="fb ok pop";fb.textContent="⭕ せいかい！ +"+pt+(combo>1?"（"+combo+"れんぞく🔥）":"");sfx("ok");vib(20);}
-else{combo=0;lives--;miss.push(q);if(btn)btn.classList.add("ng");$("qc").classList.add("shake");setTimeout(()=>$("qc").classList.remove("shake"),400);
-fb.className="fb ng";fb.textContent=(btn?"❌ ざんねん！":"⏰ じかんぎれ！")+" 答え："+q.w+"（"+q.r+"）";sfx(btn?"ng":"time");vib([40,40,40]);}
-$("sc").textContent=score+"点";hearts();
-const n=$("nx");n.style.display="block";n.onclick=nextQ;
-if(ok)setTimeout(()=>{if(lock&&Q[i]===q&&n.style.display==="block")nextQ()},900)}
+  if(lock)return;lock=true;clearInterval(tm);const q=Q[i],key=q.m==="read"?"r":"w";
+  box.querySelectorAll("button").forEach(b=>{b.disabled=true;if(b.textContent===q[key])b.classList.add("ok")});
+  const fb=$("fb");
+  if(ok){
+    combo++;const pt=100+Math.round(t*5)+Math.min(combo-1,5)*20;score+=pt;
+    fb.className="fb ok pop";fb.textContent="⭕ せいかい！ +"+pt+(combo>1?"（"+combo+"れんぞく🔥）":"");
+    sfx("ok");vib(20);
+  }else{
+    combo=0;lives--;miss.push(q);if(btn)btn.classList.add("ng");
+    $("qc").classList.add("shake");setTimeout(()=>$("qc").classList.remove("shake"),400);
+    fb.className="fb ng";fb.textContent=(btn?"❌ ざんねん！":"⏰ じかんぎれ！")+" 答え："+q.w+"（"+q.r+"）";
+    sfx(btn?"ng":"time");vib([40,40,40]);
+  }
+  $("sc").textContent=score+"点";hearts();
+  const n=$("nx");n.style.display="block";n.onclick=nextQ;
+  if(ok)setTimeout(()=>{if(lock&&Q[i]===q&&n.style.display==="block")nextQ()},900)
+}
+
 function nextQ(){if(!lock)return;lock=false;$("nx").style.display="none";i++;if(lives<=0||i>=Q.length)finish();else ask()}
+
 function finish(){
-clearInterval(tm);show("s-end");const cleared=lives>0,ok=Q.length-miss.length;
-const stars=!cleared?0:miss.length===0?3:miss.length<=2?2:1;
-$("st").textContent="⭐".repeat(stars)+"☆".repeat(3-stars);
-bgmStop();sfx(cleared?"win":"lose");vib(cleared?[30,30,30,30,80]:[120]);$("rs").textContent=score+"点";
-const b=bestGet(G,M);let msg=cleared?"クリア！ "+Q.length+"問中"+ok+"問せいかい":"ハートがなくなっちゃった…";
-if(score>b){bestSet(score);msg+="\n🎉 このコースのベスト更新！"}else msg+="\nこのコースのベスト："+b+"点"
-$("rm").style.whiteSpace="pre-line";$("rm").textContent=msg;
-const l=$("ml");l.innerHTML="";$("ms").style.display=miss.length?"block":"none";
-miss.forEach(m=>{const d=document.createElement("div");d.className="miss";d.innerHTML="<span></span><span></span>";d.children[0].textContent=m.w;d.children[1].textContent=m.r;l.appendChild(d)})}
-/* ===== おと ===== */
+  clearInterval(tm);show("s-end");const cleared=lives>0,ok=Q.length-miss.length;
+  const stars=!cleared?0:miss.length===0?3:miss.length<=2?2:1;
+  $("st").textContent="⭐".repeat(stars)+"☆".repeat(3-stars);
+  bgmStop();sfx(cleared?"win":"lose");vib(cleared?[30,30,30,30,80]:[120]);
+  $("rs").textContent=score+"点";
+  const b=bestGet(G,M);let msg=cleared?"クリア！ "+Q.length+"問中"+ok+"問せいかい":"ハートがなくなっちゃった…";
+  if(score>b){bestSet(score);msg+="\n🎉 このコースのベスト更新！"}else msg+="\nこのコースのベスト："+b+"点";
+  $("rm").style.whiteSpace="pre-line";$("rm").textContent=msg;
+  const l=$("ml");l.innerHTML="";$("ms").style.display=miss.length?"block":"none";
+  miss.forEach(m=>{
+    const d=document.createElement("div");d.className="miss";
+    d.innerHTML="<span></span><span></span>";
+    d.children[0].textContent=m.w;d.children[1].textContent=m.r;
+    l.appendChild(d)
+  })
+}
+
+/* ===== おと・サウンドマネージャー ===== */
 const S={bgm:true,se:true,vb:true};
-let AC=null,mg=null,bgmT=null,bgmOn=false,stp=0,lastS=11;
-function audioInit(){try{if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=1;mg.connect(AC.destination)}if(AC.state==="suspended")AC.resume()}catch(e){}}
-function tone(f,d,type,vol,when){if(!AC)return;try{const t0=AC.currentTime+(when||0),o=AC.createOscillator(),g=AC.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol||.2,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(mg);o.start(t0);o.stop(t0+d+.05)}catch(e){}}
+let AC=null,mg=null,bgmT=null,bgmOn=false,stp=0,lastS=11,currentWorld="4read";
+
+function audioInit(){
+  try{
+    if(!AC){
+      AC=new(window.AudioContext||window.webkitAudioContext)();
+      mg=AC.createGain();mg.gain.value=0.8;mg.connect(AC.destination);
+    }
+    if(AC.state==="suspended")AC.resume();
+  }catch(e){}
+}
+
+function tone(f,d,type,vol,when){
+  if(!AC)return;
+  try{
+    const t0=AC.currentTime+(when||0),o=AC.createOscillator(),g=AC.createGain();
+    o.type=type||"sine";o.frequency.setValueAtTime(f,t0);
+    g.gain.setValueAtTime(.0001,t0);
+    g.gain.exponentialRampToValueAtTime(vol||.2,t0+.01);
+    g.gain.exponentialRampToValueAtTime(.0001,t0+d);
+    o.connect(g);g.connect(mg);o.start(t0);o.stop(t0+d+.05);
+  }catch(e){}
+}
+
+/* ノイズ生成（ドラム・ウェーブ音用） */
+function noise(d,vol,when){
+  if(!AC)return;
+  try{
+    const t0=AC.currentTime+(when||0), bs=AC.sampleRate*d, b=AC.createBuffer(1,bs,AC.sampleRate), data=b.getChannelData(0);
+    for(let i=0;i<bs;i++) data[i]=Math.random()*2-1;
+    const src=AC.createBufferSource(), g=AC.createGain();
+    src.buffer=b;
+    g.gain.setValueAtTime(vol||0.1, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0+d);
+    src.connect(g);g.connect(mg);src.start(t0);src.stop(t0+d+.02);
+  }catch(e){}
+}
+
 const N=n=>440*Math.pow(2,(n-9)/12);
-function vib(p){if(!S.vb)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
-function sfx(k){if(!S.se||!AC)return;
-if(k==="click")tone(N(12),.08,"square",.1);
-else if(k==="ok"){const b=Math.min(combo,6);[0,4,7].forEach((n,j)=>tone(N(12+b+n),.18,"triangle",.25,j*.07));tone(N(24+b),.35,"sine",.18,.21)}
-else if(k==="ng"){tone(N(-5),.2,"sawtooth",.16);tone(N(-9),.35,"sawtooth",.16,.16)}
-else if(k==="time"){[7,4,0].forEach((n,j)=>tone(N(n),.2,"square",.12,j*.15))}
-else if(k==="tick")tone(N(19),.05,"square",.08);
-else if(k==="win"){[0,4,7,12,16,19,24].forEach((n,j)=>tone(N(12+n),.22,"triangle",.25,j*.1));tone(N(36),.6,"sine",.2,.7)}
-else if(k==="lose"){[7,5,2,-5].forEach((n,j)=>tone(N(n),.3,"triangle",.22,j*.22))}}
-const MEL=[12,16,19,16,17,16,14,null,12,16,19,24,23,19,null,null,17,21,24,21,19,16,14,16,12,14,16,19,17,14,12,null];
-const BAS=[0,0,5,5,7,5,7,0];
-function bgmStart(){if(!S.bgm||bgmOn||!AC)return;bgmOn=true;stp=0;bgmT=setInterval(()=>{const m=MEL[stp%32];if(m!==null)tone(N(m),.22,"square",.045);if(stp%4===0)tone(N(BAS[(stp/4)%8]-12),.7,"triangle",.1);stp++},200)}
-function bgmStop(){clearInterval(bgmT);bgmOn=false}
-function setA(k,v){S[k]=v;document.querySelectorAll('[data-a="'+k+'"]').forEach(c=>c.classList.toggle("sel",v));if(k==="bgm"){$("mq").textContent=v?"🎵":"🔇";if(!v)bgmStop();else if($("s-play").classList.contains("on")){audioInit();bgmStart()}}if(k==="vb"&&v)vib(30);if(k==="se"&&v){audioInit();sfx("click")}try{localStorage.setItem("kj-a",JSON.stringify(S))}catch(e){}}
+
+/* HD振動風マイクロパルス */
+function vib(p){
+  if(!S.vb)return;
+  try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}
+}
+
+/* マリオオデッセイ風 効果音 */
+function sfx(k){
+  if(!S.se||!AC)return;
+  audioInit();
+  
+  if(k==="click"){
+    // ボタン押下（キャッピー投げ風スウィッシュ音）
+    tone(600,.04,"sine",.12);
+    tone(1200,.06,"triangle",.08,.02);
+    vib([10, 15, 10]);
+  }
+  else if(k==="ok"){
+    // コイン・パワームーン獲得風サウンド
+    const b=Math.min(combo,5)*2;
+    tone(N(19+b),.12,"sine",.22);
+    tone(N(26+b),.35,"sine",.28,.06);
+    vib([15, 30, 25, 40]);
+  }
+  else if(k==="ng"){
+    // 敵ヒット・ミス音（ズッコケ低音）
+    tone(N(-3),.12,"sawtooth",.22);
+    tone(N(-8),.25,"sawtooth",.22,.1);
+    vib([40, 50, 60]);
+  }
+  else if(k==="time"){
+    // タイムオーバー音
+    tone(N(8),.1,"square",.15);
+    tone(N(3),.15,"square",.15,.08);
+    tone(N(-2),.25,"square",.18,.18);
+    vib([30, 30, 30, 50]);
+  }
+  else if(k==="tick"){
+    // カウントダウン（ウッドブロック風）
+    tone(N(21),.04,"triangle",.12);
+    vib(8);
+  }
+  else if(k==="win"){
+    // パワームーンゲット・ファンファーレ（オデッセイ風）
+    const m=[12, 16, 19, 24, 21, 24, 28];
+    const d=[0.12, 0.12, 0.12, 0.2, 0.12, 0.12, 0.6];
+    let tOffset=0;
+    m.forEach((note, idx)=>{
+      tone(N(note), d[idx]*1.1, "triangle", 0.28, tOffset);
+      tone(N(note-12), d[idx]*1.1, "sawtooth", 0.12, tOffset);
+      tOffset += d[idx];
+    });
+    vib([20, 20, 20, 20, 40, 40, 100]);
+  }
+  else if(k==="lose"){
+    // ゲームオーバー（悲しい下降旋律）
+    [15, 14, 13, 12, 7, 0].forEach((n,j)=>{
+      tone(N(n), .22, "sawtooth", .18, j*.14);
+    });
+    vib([80, 40, 80, 40, 120]);
+  }
+}
+
+/* 各国専用 BGM メロディ＆リズムパターン */
+const BGM_DATA = {
+  // 🎩 帽子の国: ミステリアス＆ジャジーなマイナーメロディ
+  "4read": {
+    tempo: 260,
+    mel: [12, null, 15, null, 14, 12, 11, null, 7, null, 11, null, 12, null, null, null],
+    bas: [0, null, 0, null, -5, null, -5, null],
+    type: "sine", bType: "triangle"
+  },
+  // 🦖 滝の国: 壮大な大自然のアドベンチャー
+  "4write": {
+    tempo: 190,
+    mel: [12, 12, 19, null, 17, 16, 17, 19, 12, null, 16, 14, 12, null, null, null],
+    bas: [0, 0, 5, 5, 7, 7, 0, 0],
+    type: "sawtooth", bType: "triangle"
+  },
+  // 🌲 森の国: キャッチーな60年代ロック・サーフサウンド
+  "5read": {
+    tempo: 160,
+    mel: [12, 15, 17, 12, 15, 17, 19, 17, 15, 17, 15, 12, 10, 12, null, null],
+    bas: [0, 3, 5, 0, 3, 5, -2, 0],
+    type: "square", bType: "sawtooth"
+  },
+  // 🏜️ 砂の国: 跳ねるようなラテン・カリプソリズム
+  "5write": {
+    tempo: 170,
+    mel: [16, 16, null, 16, 19, 16, 14, 12, 16, 16, null, 16, 14, 12, 11, null],
+    bas: [0, 7, 5, 7, 0, 7, 5, 7],
+    type: "triangle", bType: "sine"
+  },
+  // 🏙️ 都市の国: Jump Up! 風のジャジーで賑やかなスウィング
+  "6read": {
+    tempo: 150,
+    mel: [12, 16, 19, 23, 24, null, 23, 24, 19, null, 16, 17, 19, null, null, null],
+    bas: [0, 4, 7, 9, 5, 9, 7, 2],
+    type: "square", bType: "triangle"
+  },
+  // 🌊 海の国: ゆったりとした常夏リゾートのトロピカルサウンド
+  "6write": {
+    tempo: 220,
+    mel: [19, null, 16, 12, 16, null, 19, null, 21, null, 19, 16, 14, null, 12, null],
+    bas: [0, null, 5, null, 7, null, 0, null],
+    type: "sine", bType: "triangle"
+  },
+  // ❄️ 雪の国: どこか切なく透明感あふれるオルゴール風サウンド
+  "7read": {
+    tempo: 240,
+    mel: [24, null, 19, null, 16, null, 19, null, 23, null, 19, null, 16, null, 12, null],
+    bas: [0, null, null, null, 7, null, null, null],
+    type: "sine", bType: "sine"
+  },
+  // 🌋 料理の国: ダンサブルで熱気あふれるフェスティバルサウンド
+  "7write": {
+    tempo: 150,
+    mel: [12, 16, 17, 19, 17, 16, 12, null, 14, 17, 19, 21, 19, 17, 14, null],
+    bas: [0, 0, 5, 5, 7, 7, 2, 2],
+    type: "sawtooth", bType: "square"
+  },
+  // 🌕 月の国: 無重力感あふれる幻想的で静かなシンセサウンド
+  "8read": {
+    tempo: 300,
+    mel: [12, null, null, 19, null, null, 24, null, null, 19, null, null, 16, null, null, null],
+    bas: [-12, null, null, null, -5, null, null, null],
+    type: "sine", bType: "triangle"
+  },
+  // 🍄 キノコ王国: 王道マリオテーマをオマージュした明るく跳ねるフレーズ
+  "8write": {
+    tempo: 160,
+    mel: [16, 16, null, 16, null, 12, 16, null, 19, null, null, null, 7, null, null, null],
+    bas: [0, 0, 0, 0, 7, 7, 7, 7],
+    type: "square", bType: "square"
+  }
+};
+
+function bgmStart(){
+  if(!S.bgm||bgmOn||!AC)return;
+  bgmOn=true;stp=0;
+  const key = G + M;
+  const track = BGM_DATA[key] || BGM_DATA["4read"];
+  
+  bgmT=setInterval(()=>{
+    const m = track.mel[stp % track.mel.length];
+    if(m !== null && m !== undefined) {
+      tone(N(m), 0.18, track.type, 0.05);
+    }
+    if(stp % 2 === 0) {
+      const bIdx = Math.floor((stp / 2) % track.bas.length);
+      const b = track.bas[bIdx];
+      if(b !== null && b !== undefined) {
+        tone(N(b - 12), 0.35, track.bType, 0.08);
+      }
+    }
+    // トロピカル/砂漠/都市コースの波音・ノイズパーカッション
+    if((key==="6write" || key==="5write" || key==="6read") && stp % 4 === 2) {
+      noise(0.06, 0.02);
+    }
+    stp++;
+  }, track.tempo);
+}
+
+function bgmStop(){
+  clearInterval(bgmT);
+  bgmOn=false;
+}
+
+function setA(k,v){
+  S[k]=v;
+  document.querySelectorAll('[data-a="'+k+'"]').forEach(c=>c.classList.toggle("sel",v));
+  if(k==="bgm"){
+    $("mq").textContent=v?"🎵":"🔇";
+    if(!v) bgmStop();
+    else if($("s-play").classList.contains("on")){
+      audioInit();
+      bgmStart();
+    }
+  }
+  if(k==="vb"&&v) vib(30);
+  if(k==="se"&&v){
+    audioInit();
+    sfx("click");
+  }
+  try{localStorage.setItem("kj-a",JSON.stringify(S))}catch(e){}
+}
+
 document.querySelectorAll("[data-a]").forEach(c=>c.onclick=()=>setA(c.dataset.a,!S[c.dataset.a]));
 $("mq").onclick=()=>setA("bgm",!S.bgm);
+
 try{Object.assign(S,JSON.parse(localStorage.getItem("kj-a")||"{}"))}catch(e){}
 ["bgm","se","vb"].forEach(k=>document.querySelectorAll('[data-a="'+k+'"]').forEach(c=>c.classList.toggle("sel",!!S[k])));
 $("mq").textContent=S.bgm?"🎵":"🔇";
-document.addEventListener("visibilitychange",()=>{try{if(AC){document.hidden?AC.suspend():AC.resume()}}catch(e){}});
+
+document.addEventListener("visibilitychange",()=>{
+  try{
+    if(AC){
+      document.hidden?AC.suspend():AC.resume();
+    }
+  }catch(e){}
+});
+
 home();
 </script></body></html>
