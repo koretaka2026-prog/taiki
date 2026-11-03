@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>漢字チャレンジ 漢検7〜5級</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#fff8ec;--card:#fff;--ink:#2b2438;--sub:#7a7390;--main:#ff7a45;--main2:#ffb347;--ok:#2fb86b;--ng:#e5484d;--line:#eadfce}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1a28;--card:#2a2639;--ink:#f4f0ff;--sub:#a59fbd;--line:#3d3753}}
+:root[data-theme="dark"]{--bg:#1d1a28;--card:#2a2639;--ink:#f4f0ff;--sub:#a59fbd;--line:#3d3753}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif}
+#app{max-width:480px;margin:0 auto;padding:16px;min-height:100vh}
+.scr{display:none;flex-direction:column;gap:14px}.scr.on{display:flex}
+h1{margin:12px 0 0;text-align:center;font-size:34px;letter-spacing:2px}
+h1 span{color:var(--main)}
+.sub{text-align:center;color:var(--sub);margin:0}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:14px}
+.card h3{margin:0 0 10px;font-size:15px;color:var(--sub)}
+.row{display:flex;gap:8px;flex-wrap:wrap}
+.chip{flex:1;min-width:70px;padding:12px 6px;border-radius:14px;border:2px solid var(--line);background:var(--bg);color:var(--ink);font:inherit;font-weight:700;font-size:16px}
+.chip.sel{background:var(--main);border-color:var(--main);color:#fff}
+#g-row .chip{flex:1 1 44%;font-size:18px;padding:14px 6px}
+#g-row .chip small{font-weight:400;font-size:12px;opacity:.8}
+.big{padding:18px;border:0;border-radius:18px;background:linear-gradient(135deg,var(--main),var(--main2));color:#fff;font:inherit;font-size:22px;font-weight:800;box-shadow:0 5px 0 rgba(0,0,0,.18)}
+.big:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,.18)}
+.top{display:flex;justify-content:space-between;align-items:center;font-weight:800}
+.hearts{font-size:20px;letter-spacing:2px}
+.bar{height:12px;border-radius:8px;background:var(--line);overflow:hidden}
+.bar i{display:block;height:100%;width:100%;background:var(--ok);transition:width .1s linear,background .3s}
+.q{text-align:center;padding:26px 10px}
+.tag{font-size:13px;color:var(--sub);font-weight:700}
+.word{font-size:52px;font-weight:800;margin:8px 0;line-height:1.2;word-break:keep-all}
+.hint{color:var(--sub);font-size:15px}
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ch button{padding:18px 6px;border-radius:16px;border:2px solid var(--line);background:var(--card);color:var(--ink);font:inherit;font-size:22px;font-weight:700;min-height:64px}
+.ch button.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.ch button.ng{background:var(--ng);border-color:var(--ng);color:#fff}
+.ch button:disabled{opacity:1}
+.fb{text-align:center;min-height:52px;font-weight:800;font-size:18px}
+.fb.ok{color:var(--ok)}.fb.ng{color:var(--ng)}
+.stars{font-size:46px;text-align:center}
+.score{font-size:48px;font-weight:800;text-align:center;color:var(--main)}
+.miss{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px dashed var(--line);font-size:18px}
+.miss span:last-child{color:var(--sub)}
+.pop{animation:pop .35s}@keyframes pop{50%{transform:scale(1.08)}}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+/* ===== 冒険アクション風 ===== */
+:root,:root:not([data-theme="light"]),:root[data-theme="dark"]{--bg:#7fd0ff;--card:#fff;--ink:#1c2a4a;--sub:#fff;--line:#1c2a4a}
+html{min-height:100%;background:radial-gradient(ellipse 70px 24px at 12% 9%,#fff 96%,transparent 100%),radial-gradient(ellipse 50px 18px at 20% 11%,#fff 96%,transparent 100%),radial-gradient(ellipse 80px 26px at 82% 18%,#fff 96%,transparent 100%),radial-gradient(ellipse 55px 20px at 74% 20%,#fff 96%,transparent 100%),radial-gradient(ellipse 90px 28px at 30% 52%,#fff 96%,transparent 100%),linear-gradient(#5ebd2f,#5ebd2f) bottom/100% 18px no-repeat,linear-gradient(#2f93f0,#7fd0ff 50%,#d6f3ff) fixed}
+body{background:transparent}
+#app{padding-bottom:40px}
+h1{color:#fff;font-weight:900;font-size:38px;text-shadow:0 3px 0 #1c2a4a,3px 0 0 #1c2a4a,-3px 0 0 #1c2a4a,0 -3px 0 #1c2a4a,3px 3px 0 #1c2a4a,-3px 3px 0 #1c2a4a,3px -3px 0 #1c2a4a,-3px -3px 0 #1c2a4a;animation:bob 2s ease-in-out infinite}
+h1 span{color:#ffd400}
+@keyframes bob{50%{transform:translateY(-5px)}}
+.sub{color:#fff;font-weight:800;text-shadow:0 2px 0 #1c2a4a}
+.card{border:4px solid #1c2a4a;border-radius:22px;box-shadow:0 6px 0 rgba(28,42,74,.35)}
+.card h3{color:#1c2a4a;font-weight:800}
+.chip{border:3px solid #1c2a4a;background:#fff;color:#1c2a4a;border-radius:16px;font-weight:800;box-shadow:0 4px 0 rgba(28,42,74,.4)}
+.chip:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(28,42,74,.4)}
+#g-row .chip{color:#fff;text-shadow:0 2px 0 rgba(0,0,0,.3)}
+#g-row .chip[data-m="read"]{background:#e60012}
+#g-row .chip[data-m="write"]{background:#1f6fe5}
+#a-row .chip.sel{background:#ffd400;color:#5a3600;border-color:#1c2a4a}
+.big{background:linear-gradient(#ffe45c,#ffb800);color:#5a3600;border:4px solid #1c2a4a;box-shadow:0 6px 0 rgba(28,42,74,.45);text-shadow:0 1px 0 rgba(255,255,255,.6)}
+.big:active{box-shadow:0 2px 0 rgba(28,42,74,.45)}
+.top{background:#1c2a4a;color:#fff;border:3px solid #fff;border-radius:18px;padding:8px 12px;gap:6px}
+#sc::before{content:"🪙 "}
+.bar{height:16px;border:3px solid #fff;background:#1c2a4a;border-radius:10px}
+.tag{display:inline-block;background:#ffd400;color:#5a3600;border:2px solid #b37400;border-radius:999px;padding:2px 12px}
+.word{color:#1c2a4a;font-weight:900}
+.hint{color:#4a5a7a;font-weight:700}
+.ch button{border:3px solid #1c2a4a;box-shadow:0 5px 0 rgba(28,42,74,.4);color:#1c2a4a;background:#fff;border-radius:18px;font-weight:800}
+.ch button:active{transform:translateY(3px)}
+.ch button.ok{background:#3ecf4a;border-color:#157a1f;color:#fff}
+.ch button.ng{background:#ff4b4b;border-color:#8a000a;color:#fff}
+.fb{background:#fff;border:3px solid #1c2a4a;border-radius:16px;padding:10px;min-height:52px;display:flex;align-items:center;justify-content:center}
+.fb:empty{visibility:hidden}
+.fb.ok{color:#14862a}.fb.ng{color:#d0021b}
+.stars{filter:drop-shadow(0 3px 0 #1c2a4a)}
+.score{color:#ffd400;text-shadow:0 3px 0 #1c2a4a,3px 0 0 #1c2a4a,-3px 0 0 #1c2a4a,0 -3px 0 #1c2a4a}
+.miss{border-bottom:2px dashed #b9c4d8;color:#1c2a4a}.miss span:last-child{color:#5a6a8a}
+</style></head><body>
+<div id="app">
+<section class="scr on" id="s-start">
+<h1>漢字<span>チャレンジ</span></h1>
+<p class="sub">🪙 漢字をマスターして、コインをあつめよう！</p>
+<div class="card"><h3>コースをタップするとスタート！</h3><div class="row" id="g-row">
+<button class="chip" data-g="4" data-m="read">7級　よみ</button><button class="chip" data-g="4" data-m="write">7級　かき</button><button class="chip" data-g="5" data-m="read">6級　よみ</button><button class="chip" data-g="5" data-m="write">6級　かき</button><button class="chip" data-g="6" data-m="read">5級　よみ</button><button class="chip" data-g="6" data-m="write">5級　かき</button></div></div>
+
+<div class="card"><h3>おと・バイブ</h3><div class="row" id="a-row"><button class="chip sel" data-a="bgm">🎵 おんがく</button><button class="chip sel" data-a="se">🔊 こうかおん</button><button class="chip sel" data-a="vb">📳 バイブ</button></div></div>
+
+<p class="sub" id="best"></p>
+<p class="sub" style="font-size:13px">10問・ハート3つ・1問10秒<br>れんぞく正解でボーナス！</p>
+</section>
+
+<section class="scr" id="s-play">
+<div class="top"><span id="no">1/10</span><span class="hearts" id="hp"></span><span id="sc">0点</span><button id="mq" class="chip" style="flex:none;min-width:0;padding:4px 10px">🎵</button></div>
+<div class="bar"><i id="tb"></i></div>
+<div class="card q" id="qc"><div class="tag" id="tg"></div><div class="word" id="wd"></div><div class="hint" id="hn"></div></div>
+<div class="ch" id="ch"></div>
+<div class="fb" id="fb"></div>
+<button class="big" id="nx" style="display:none">つぎへ ▶</button>
+</section>
+
+<section class="scr" id="s-end">
+<div class="stars" id="st"></div>
+<div class="score" id="rs"></div>
+<p class="sub" id="rm"></p>
+<div class="card" id="ms" style="display:none"><h3>まちがえた漢字</h3><div id="ml"></div></div>
+<button class="big" id="again">もういちど</button>
+<button class="chip" id="home" style="flex:none">タイトルへ</button>
+</section>
+</div>
+<script>
+const D={
+4:"勇気,ゆうき;約束,やくそく;失敗,しっぱい;努力,どりょく;課題,かだい;景色,けしき;競争,きょうそう;結果,けっか;季節,きせつ;材料,ざいりょう;順番,じゅんばん;満足,まんぞく;清潔,せいけつ;笑顔,えがお;最近,さいきん;栄養,えいよう;希望,きぼう;協力,きょうりょく;健康,けんこう;試験,しけん;説明,せつめい;伝える,つたえる;変化,へんか;老人,ろうじん;録音,ろくおん;散歩,さんぽ;倉庫,そうこ;浅い,あさい;例える,たとえる;初め,はじめ",
+5:"営業,えいぎょう;技術,ぎじゅつ;規則,きそく;義務,ぎむ;禁止,きんし;経験,けいけん;検査,けんさ;現在,げんざい;混雑,こんざつ;構成,こうせい;資源,しげん;示す,しめす;授業,じゅぎょう;述べる,のべる;準備,じゅんび;状況,じょうきょう;情報,じょうほう;政治,せいじ;製品,せいひん;絶対,ぜったい;増える,ふえる;賛成,さんせい;提案,ていあん;程度,ていど;輸出,ゆしゅつ;永遠,えいえん;得意,とくい;貿易,ぼうえき;応援,おうえん;確かめる,たしかめる;過去,かこ;留学,りゅうがく",
+6:"異なる,ことなる;宇宙,うちゅう;縮む,ちぢむ;天皇,てんのう;看病,かんびょう;頂上,ちょうじょう;推理,すいり;宣言,せんげん;垂直,すいちょく;郵便,ゆうびん;優勝,ゆうしょう;劇場,げきじょう;納める,おさめる;認める,みとめる;批評,ひひょう;模型,もけい;朗読,ろうどく;補う,おぎなう;尊敬,そんけい;将来,しょうらい;蒸気,じょうき;誠実,せいじつ;探る,さぐる;難民,なんみん;暮らす,くらす;胃腸,いちょう;臓器,ぞうき;担任,たんにん;値段,ねだん;段階,だんかい;存在,そんざい;砂糖,さとう"};
+const P=[];for(const g in D)D[g].split(";").forEach(s=>{const[w,r]=s.split(",");P.push({g:+g,w,r})});
+const $=id=>document.getElementById(id);
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+let G="4",M="read",Q=[],i=0,score=0,lives=3,combo=0,miss=[],t=10,tm=null,lock=false;
+function bestGet(g,m){try{return JSON.parse(localStorage.getItem("kj-bests")||"{}")[g+m]||0}catch(e){return 0}}
+function bestSet(v){try{const o=JSON.parse(localStorage.getItem("kj-bests")||"{}");o[G+M]=v;localStorage.setItem("kj-bests",JSON.stringify(o))}catch(e){}}
+function show(id){document.querySelectorAll(".scr").forEach(e=>e.classList.toggle("on",e.id===id))}
+function home(){bgmStop();show("s-start");document.querySelectorAll("#g-row .chip").forEach(c=>{const b=bestGet(c.dataset.g,c.dataset.m);c.innerHTML=(c.dataset.g==4?"7級":c.dataset.g==5?"6級":"5級")+"　"+(c.dataset.m==="read"?"よみ":"かき")+"<br><small>"+(b?"🏆 "+b+"点":"まだ記録なし")+"</small>"});$("best").textContent=""}
+function pick(row,key,v){row.querySelectorAll(".chip").forEach(c=>c.classList.toggle("sel",c.dataset[key]===v))}
+$("g-row").onclick=e=>{const b=e.target.closest(".chip");if(!b)return;G=b.dataset.g;M=b.dataset.m;$("g-row").querySelectorAll(".chip").forEach(c=>c.classList.toggle("sel",c===b));start()};
+
+$("again").onclick=start;$("home").onclick=home;
+function start(){audioInit();sfx("click");bgmStart();
+const pool=P.filter(p=>G==="all"||p.g==+G);
+Q=sh(pool).slice(0,10).map((p,k)=>({...p,m:M==="mix"?(k%2?"write":"read"):M}));
+Q=sh(Q);i=0;score=0;lives=3;combo=0;miss=[];show("s-play");ask()}
+function hearts(){$("hp").textContent="❤️".repeat(lives)+"🤍".repeat(3-lives)}
+function ask(){
+lock=false;const q=Q[i];hearts();$("no").textContent=(i+1)+"/"+Q.length;$("sc").textContent=score+"点";
+$("fb").textContent="";$("fb").className="fb";$("nx").style.display="none";
+$("tg").textContent="漢検"+({4:7,5:6,6:5})[q.g]+"級 ・ "+(q.m==="read"?"よみをえらぼう":"漢字をえらぼう");
+$("wd").textContent=q.m==="read"?q.w:q.r;$("hn").textContent=q.m==="read"?"なんと読む？":"どの漢字？";
+const key=q.m==="read"?"r":"w";
+const ds=sh(P.filter(p=>p[key]!==q[key])).sort((a,b)=>Math.abs(a[key].length-q[key].length)-Math.abs(b[key].length-q[key].length)).slice(0,3);
+const opts=sh([q,...ds]);const box=$("ch");box.innerHTML="";
+opts.forEach(o=>{const b=document.createElement("button");b.textContent=o[key];b.onclick=()=>answer(b,o===q,box);box.appendChild(b)});
+t=10;tick();clearInterval(tm);tm=setInterval(()=>{t-=.1;tick();if(t<=0){clearInterval(tm);answer(null,false,box)}},100)}
+function tick(){if(t>9.9)lastS=11;const s=Math.ceil(t);if(t<=3&&t>0&&s!==lastS){lastS=s;sfx("tick")}const b=$("tb");b.style.width=Math.max(t,0)*10+"%";b.style.background=t>5?"var(--ok)":t>2.5?"var(--main2)":"var(--ng)"}
+function answer(btn,ok,box){
+if(lock)return;lock=true;clearInterval(tm);const q=Q[i],key=q.m==="read"?"r":"w";
+box.querySelectorAll("button").forEach(b=>{b.disabled=true;if(b.textContent===q[key])b.classList.add("ok")});
+const fb=$("fb");
+if(ok){combo++;const pt=100+Math.round(t*5)+Math.min(combo-1,5)*20;score+=pt;fb.className="fb ok pop";fb.textContent="⭕ せいかい！ +"+pt+(combo>1?"（"+combo+"れんぞく🔥）":"");sfx("ok");vib(20);}
+else{combo=0;lives--;miss.push(q);if(btn)btn.classList.add("ng");$("qc").classList.add("shake");setTimeout(()=>$("qc").classList.remove("shake"),400);
+fb.className="fb ng";fb.textContent=(btn?"❌ ざんねん！":"⏰ じかんぎれ！")+" 答え："+q.w+"（"+q.r+"）";sfx(btn?"ng":"time");vib([40,40,40]);}
+$("sc").textContent=score+"点";hearts();
+const n=$("nx");n.style.display="block";n.onclick=nextQ;
+if(ok)setTimeout(()=>{if(lock&&Q[i]===q&&n.style.display==="block")nextQ()},900)}
+function nextQ(){if(!lock)return;lock=false;$("nx").style.display="none";i++;if(lives<=0||i>=Q.length)finish();else ask()}
+function finish(){
+clearInterval(tm);show("s-end");const cleared=lives>0,ok=Q.length-miss.length;
+const stars=!cleared?0:miss.length===0?3:miss.length<=2?2:1;
+$("st").textContent="⭐".repeat(stars)+"☆".repeat(3-stars);
+bgmStop();sfx(cleared?"win":"lose");vib(cleared?[30,30,30,30,80]:[120]);$("rs").textContent=score+"点";
+const b=bestGet(G,M);let msg=cleared?"クリア！ "+Q.length+"問中"+ok+"問せいかい":"ハートがなくなっちゃった…";
+if(score>b){bestSet(score);msg+="\n🎉 このコースのベスト更新！"}else msg+="\nこのコースのベスト："+b+"点"
+$("rm").style.whiteSpace="pre-line";$("rm").textContent=msg;
+const l=$("ml");l.innerHTML="";$("ms").style.display=miss.length?"block":"none";
+miss.forEach(m=>{const d=document.createElement("div");d.className="miss";d.innerHTML="<span></span><span></span>";d.children[0].textContent=m.w;d.children[1].textContent=m.r;l.appendChild(d)})}
+/* ===== おと ===== */
+const S={bgm:true,se:true,vb:true};
+let AC=null,mg=null,bgmT=null,bgmOn=false,stp=0,lastS=11;
+function audioInit(){try{if(!AC){AC=new(window.AudioContext||window.webkitAudioContext)();mg=AC.createGain();mg.gain.value=1;mg.connect(AC.destination)}if(AC.state==="suspended")AC.resume()}catch(e){}}
+function tone(f,d,type,vol,when){if(!AC)return;try{const t0=AC.currentTime+(when||0),o=AC.createOscillator(),g=AC.createGain();o.type=type||"sine";o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(.0001,t0);g.gain.exponentialRampToValueAtTime(vol||.2,t0+.01);g.gain.exponentialRampToValueAtTime(.0001,t0+d);o.connect(g);g.connect(mg);o.start(t0);o.stop(t0+d+.05)}catch(e){}}
+const N=n=>440*Math.pow(2,(n-9)/12);
+function vib(p){if(!S.vb)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
+function sfx(k){if(!S.se||!AC)return;
+if(k==="click")tone(N(12),.08,"square",.1);
+else if(k==="ok"){const b=Math.min(combo,6);[0,4,7].forEach((n,j)=>tone(N(12+b+n),.18,"triangle",.25,j*.07));tone(N(24+b),.35,"sine",.18,.21)}
+else if(k==="ng"){tone(N(-5),.2,"sawtooth",.16);tone(N(-9),.35,"sawtooth",.16,.16)}
+else if(k==="time"){[7,4,0].forEach((n,j)=>tone(N(n),.2,"square",.12,j*.15))}
+else if(k==="tick")tone(N(19),.05,"square",.08);
+else if(k==="win"){[0,4,7,12,16,19,24].forEach((n,j)=>tone(N(12+n),.22,"triangle",.25,j*.1));tone(N(36),.6,"sine",.2,.7)}
+else if(k==="lose"){[7,5,2,-5].forEach((n,j)=>tone(N(n),.3,"triangle",.22,j*.22))}}
+const MEL=[12,16,19,16,17,16,14,null,12,16,19,24,23,19,null,null,17,21,24,21,19,16,14,16,12,14,16,19,17,14,12,null];
+const BAS=[0,0,5,5,7,5,7,0];
+function bgmStart(){if(!S.bgm||bgmOn||!AC)return;bgmOn=true;stp=0;bgmT=setInterval(()=>{const m=MEL[stp%32];if(m!==null)tone(N(m),.22,"square",.045);if(stp%4===0)tone(N(BAS[(stp/4)%8]-12),.7,"triangle",.1);stp++},200)}
+function bgmStop(){clearInterval(bgmT);bgmOn=false}
+function setA(k,v){S[k]=v;document.querySelectorAll('[data-a="'+k+'"]').forEach(c=>c.classList.toggle("sel",v));if(k==="bgm"){$("mq").textContent=v?"🎵":"🔇";if(!v)bgmStop();else if($("s-play").classList.contains("on")){audioInit();bgmStart()}}if(k==="vb"&&v)vib(30);if(k==="se"&&v){audioInit();sfx("click")}try{localStorage.setItem("kj-a",JSON.stringify(S))}catch(e){}}
+document.querySelectorAll("[data-a]").forEach(c=>c.onclick=()=>setA(c.dataset.a,!S[c.dataset.a]));
+$("mq").onclick=()=>setA("bgm",!S.bgm);
+try{Object.assign(S,JSON.parse(localStorage.getItem("kj-a")||"{}"))}catch(e){}
+["bgm","se","vb"].forEach(k=>document.querySelectorAll('[data-a="'+k+'"]').forEach(c=>c.classList.toggle("sel",!!S[k])));
+$("mq").textContent=S.bgm?"🎵":"🔇";
+document.addEventListener("visibilitychange",()=>{try{if(AC){document.hidden?AC.suspend():AC.resume()}}catch(e){}});
+home();
+</script></body></html>
