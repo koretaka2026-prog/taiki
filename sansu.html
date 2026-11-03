@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="ja"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>数検 Mansion - オバケ屋敷の算数チャレンジ</title>
+<style>
+:root{
+  --bg:#07040d;--card:#140c24;--ink:#f0e8ff;--sub:#a28ecb;
+  --line:#3a295c;--main:#00ff66;--goo:#00ff44;--ok:#00ff66;--ng:#ff1744;--accent:#ffd700;--purple:#9d4edd;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:var(--bg);color:var(--ink);font-family:"Hiragino Maru Gothic ProN","Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;overflow-x:hidden}
+
+/* ルイージマンション3：ラストリゾートホテル風の怪しく煌びやかな背景 */
+body{
+  background: 
+    radial-gradient(circle at 50% 15%, rgba(0,255,102,0.15) 0%, transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(157,78,221,0.2) 0%, transparent 50%),
+    radial-gradient(circle at 20% 80%, rgba(255,215,0,0.1) 0%, transparent 40%),
+    linear-gradient(180deg, #100821 0%, #06030a 100%) fixed;
+  transition: background 0.5s ease;
+}
+
+/* ===== 各フロア専用の個性的なテーマカラー＆背景ビジュアル ===== */
+/* 1F: Grand Lobby (ゴールド＆グリーン) */
+body[data-floor="10_easy"] {
+  background: radial-gradient(circle at 50% 20%, rgba(255,215,0,0.25), transparent 50%),
+              linear-gradient(180deg, #1f1402 0%, #080500 100%) fixed !important;
+}
+body[data-floor="10_easy"] .q-box { border-color: #ffd700; box-shadow: 0 0 25px rgba(255,215,0,0.3); }
+
+/* 2F: Mezzanine / Restaurant (レッド＆バーガンディ) */
+body[data-floor="10_normal"] {
+  background: radial-gradient(circle at 50% 20%, rgba(255,23,68,0.25), transparent 50%),
+              linear-gradient(180deg, #2b050d 0%, #080003 100%) fixed !important;
+}
+body[data-floor="10_normal"] .q-box { border-color: #ff1744; box-shadow: 0 0 25px rgba(255,23,68,0.3); }
+
+/* 3F: Hotel Shops (ネオンバイオレット) */
+body[data-floor="10_hard"] {
+  background: radial-gradient(circle at 50% 20%, rgba(224,64,251,0.25), transparent 50%),
+              linear-gradient(180deg, #23032b 0%, #060008 100%) fixed !important;
+}
+body[data-floor="10_hard"] .q-box { border-color: #e040fb; box-shadow: 0 0 25px rgba(224,64,251,0.3); }
+
+/* 4F: Concert Hall (ロイヤルブルー＆エメラルド) */
+body[data-floor="9_easy"] {
+  background: radial-gradient(circle at 50% 20%, rgba(0,229,255,0.25), transparent 50%),
+              linear-gradient(180deg, #021a2b 0%, #00060a 100%) fixed !important;
+}
+body[data-floor="9_easy"] .q-box { border-color: #00e5ff; box-shadow: 0 0 25px rgba(0,229,255,0.3); }
+
+/* 5F: VIP Suites (ラグジュアリーローズゴールド) */
+body[data-floor="9_normal"] {
+  background: radial-gradient(circle at 50% 20%, rgba(255,171,64,0.25), transparent 50%),
+              linear-gradient(180deg, #2b1702 0%, #0a0500 100%) fixed !important;
+}
+body[data-floor="9_normal"] .q-box { border-color: #ffab40; box-shadow: 0 0 25px rgba(255,171,64,0.3); }
+
+/* 6F: Castle MacFrights (中世ダークグリーン＆グーイージ) */
+body[data-floor="9_hard"] {
+  background: radial-gradient(circle at 50% 20%, rgba(0,255,102,0.3), transparent 50%),
+              linear-gradient(180deg, #02240b 0%, #000802 100%) fixed !important;
+}
+body[data-floor="9_hard"] .q-box { border-color: #00ff66; box-shadow: 0 0 30px rgba(0,255,102,0.4); }
+
+#app{max-width:500px;margin:0 auto;padding:16px 16px 40px;min-height:100vh;display:flex;flex-direction:column}
+.scr{display:none;flex-direction:column;gap:14px}.scr.on{display:flex}
+
+/* タイトルヘッダー */
+h1{
+  margin:10px 0 0;text-align:center;font-size:34px;letter-spacing:2px;
+  color:#00ff66;font-weight:900;
+  text-shadow:0 0 16px rgba(0,255,102,0.8), 0 3px 0 #033a14, 3px 0 0 #033a14, -3px 0 0 #033a14, 0 -3px 0 #033a14;
+  animation:ghostBob 2.5s ease-in-out infinite;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+h1 span{color:#ffd700;text-shadow:0 0 16px rgba(255,215,0,0.8), 0 3px 0 #524000;}
+@keyframes ghostBob{0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)}}
+
+.sub{text-align:center;color:var(--sub);margin:0;font-weight:700;font-size:14px}
+
+.card{
+  background:rgba(20,12,36,0.9);border:3px solid var(--line);border-radius:22px;padding:16px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+}
+.card h3{margin:0 0 12px;font-size:15px;color:#ffd700;font-weight:800;display:flex;align-items:center;gap:6px;text-shadow:0 2px 4px rgba(0,0,0,0.5)}
+
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.chip{
+  flex:1;min-width:130px;padding:14px 10px;border-radius:18px;border:3px solid var(--line);
+  background:linear-gradient(145deg, #1d1233, #120a21);color:var(--ink);font:inherit;font-weight:800;font-size:15px;
+  box-shadow:0 6px 0 rgba(0,0,0,0.6);cursor:pointer;transition:all 0.15s ease;
+  text-align:left;display:flex;flex-direction:column;gap:4px;
+}
+.chip:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,0.6)}
+.chip small{font-size:11px;color:var(--sub);font-weight:600}
+.chip.sel{
+  background:linear-gradient(145deg, #0f401b, #07210d);
+  border-color:#00ff66;color:#00ff66;
+  box-shadow:0 0 15px rgba(0,255,102,0.4), 0 6px 0 rgba(0,0,0,0.6);
+}
+
+/* アクションボタン（グーイージカラー） */
+.big{
+  padding:18px;border:3px solid #00ff66;border-radius:20px;
+  background:linear-gradient(180deg,#00ff66,#009933);color:#021c08;
+  font:inherit;font-size:22px;font-weight:900;
+  box-shadow:0 6px 0 #014d1a, 0 0 25px rgba(0,255,102,0.6);
+  text-shadow:0 1px 0 rgba(255,255,255,0.5);cursor:pointer;width:100%;
+}
+.big:active{transform:translateY(3px);box-shadow:0 3px 0 #014d1a}
+
+/* ゲームヘッダー・ステータス */
+.top{
+  display:flex;justify-content:space-between;align-items:center;font-weight:800;
+  background:#120921;color:#fff;border:3px solid #4a3478;border-radius:20px;padding:10px 16px;
+  box-shadow:0 4px 15px rgba(0,0,0,0.6);
+}
+.hearts{font-size:20px;letter-spacing:3px;filter:drop-shadow(0 0 6px rgba(0,255,102,0.6))}
+#sc{color:var(--accent);font-size:19px;font-weight:900;text-shadow:0 0 8px rgba(255,215,0,0.6)}
+#sc::before{content:"💎 "}
+
+/* タイムバー */
+.bar{height:16px;border:3px solid #3a295c;background:#0a0512;border-radius:10px;overflow:hidden;box-shadow:inset 0 2px 4px rgba(0,0,0,0.8)}
+.bar i{display:block;height:100%;width:100%;background:linear-gradient(90deg, #00ff66, #00b348);box-shadow:0 0 12px #00ff66;transition:width .1s linear,background .3s}
+
+/* 問題＆オバケカード（ホテルエレベーター風） */
+.q-box{
+  position:relative;background:linear-gradient(180deg, #190d33 0%, #0d061c 100%);
+  border:4px solid #5c3e96;border-radius:26px;
+  padding:24px 16px;text-align:center;box-shadow:0 12px 35px rgba(0,0,0,0.8), inset 0 0 20px rgba(157,78,221,0.2);
+  overflow:hidden;min-height:230px;display:flex;flex-direction:column;justify-content:center;align-items:center;
+}
+.ghost-avatar{
+  font-size:72px;margin-bottom:8px;
+  filter:drop-shadow(0 0 18px rgba(0,255,102,0.7));
+  animation:ghostFloat 2.8s ease-in-out infinite;
+  transition:transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.ghost-avatar.sucking{
+  animation:suckAnim 0.4s ease-in-out infinite alternate !important;
+  transform:scale(0.6) rotate(15deg) !important;
+  filter:drop-shadow(0 0 25px rgba(255,23,68,0.9)) !important;
+}
+@keyframes ghostFloat{0%,100%{transform:translateY(0) rotate(-4deg)} 50%{transform:translateY(-10px) rotate(4deg)}}
+@keyframes suckAnim{0%{transform:scale(0.7) translateY(0)} 100%{transform:scale(0.5) translateY(-15px) rotate(-20deg)}}
+
+.tag{
+  display:inline-block;background:linear-gradient(135deg, #4a2885, #271249);color:#e2caff;
+  border:2px solid #8e58e3;border-radius:999px;padding:4px 16px;font-size:13px;font-weight:800;margin-bottom:10px;
+  box-shadow:0 0 10px rgba(142,88,227,0.4);
+}
+.word{font-size:34px;font-weight:900;margin:8px 0;color:#fff;text-shadow:0 0 14px rgba(255,255,255,0.5);line-height:1.3}
+.hint{color:var(--sub);font-size:15px;font-weight:700}
+
+/* 選択肢ボタン */
+.ch{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.ch button{
+  padding:16px 8px;border-radius:20px;border:3px solid #3d2b61;
+  background:linear-gradient(180deg, #241642, #140b28);color:#fff;font:inherit;font-size:24px;font-weight:900;
+  min-height:68px;box-shadow:0 6px 0 rgba(0,0,0,0.6);cursor:pointer;
+  transition:all 0.15s ease;
+}
+.ch button:active{transform:translateY(3px);box-shadow:0 2px 0 rgba(0,0,0,0.6)}
+.ch button.ok{background:linear-gradient(180deg,#00ff66,#009933) !important;border-color:#00ff66 !important;color:#021c08 !important;box-shadow:0 0 25px rgba(0,255,102,0.8), 0 4px 0 #014d1a !important;text-shadow:0 1px 0 rgba(255,255,255,0.4)}
+.ch button.ng{background:linear-gradient(180deg,#ff1744,#b71c1c) !important;border-color:#ff1744 !important;color:#fff !important;box-shadow:0 0 25px rgba(255,23,68,0.8), 0 4px 0 #5f0909 !important}
+
+/* フィードバック */
+.fb{
+  background:#120921;border:3px solid #3a295c;border-radius:18px;padding:12px;
+  min-height:56px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:18px;
+  box-shadow:0 6px 20px rgba(0,0,0,0.5);
+}
+.fb:empty{visibility:hidden}
+.fb.ok{color:#00ff66;border-color:#00ff66;box-shadow:0 0 15px rgba(0,255,102,0.3)}
+.fb.ng{color:#ff1744;border-color:#ff1744;box-shadow:0 0 15px rgba(255,23,68,0.3)}
+
+.stars{font-size:46px;text-align:center;filter:drop-shadow(0 0 15px rgba(255,215,0,0.8))}
+.score{font-size:48px;font-weight:900;text-align:center;color:var(--accent);text-shadow:0 0 20px rgba(255,215,0,0.6)}
+.miss{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);color:var(--ink);font-size:15px;font-weight:700}
+.miss span:last-child{color:var(--ng)}
+
+.pop{animation:pop .35s}@keyframes pop{50%{transform:scale(1.08)}}
+.shake{animation:sh .35s}@keyframes sh{25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- スタート画面 -->
+<section class="scr on" id="s-start">
+<h1>🧪 算数 <span>MANSION 3</span></h1>
+<p class="sub">🔦 ラストリゾートホテルのオバケをグーイージと退治しよう！</p>
+
+<div class="card">
+  <h3>🏨 ホテルのフロア（コース）をえらぼう</h3>
+  <div class="row" id="g-row">
+    <button class="chip sel" data-g="10_easy">
+      <span>1F 🛎️ メインロビー</span>
+      <small>くり上がりなし・グーラ登場</small>
+    </button>
+    <button class="chip" data-g="10_normal">
+      <span>2F 🍽️ レストラン</span>
+      <small>くり上がりあり・シェフオバケ</small>
+    </button>
+    <button class="chip" data-g="10_hard">
+      <span>3F 🛍️ ショッピングモール</span>
+      <small>文章題・オバケ警備員</small>
+    </button>
+    <button class="chip" data-g="9_easy">
+      <span>4F 🎹 コンサートホール</span>
+      <small>九九・ピアニストオバケ</small>
+    </button>
+    <button class="chip" data-g="9_normal">
+      <span>5F 👑 スイートルーム</span>
+      <small>2桁たし引き・メイドオバケ</small>
+    </button>
+    <button class="chip" data-g="9_hard">
+      <span>6F 🏰 キャッスルエリア</span>
+      <small>文章題・キングテレサの試練</small>
+    </button>
+  </div>
+</div>
+
+<div class="card">
+  <h3>⚙️ オバキューム・サウンダー設定</h3>
+  <div class="row" id="a-row">
+    <button class="chip sel" data-a="bgm">🎵 BGM</button>
+    <button class="chip sel" data-a="se">🔊 効果音</button>
+    <button class="chip sel" data-a="vb">📳 HDパルス振動</button>
+  </div>
+</div>
+
+<p class="sub" id="best-score" style="font-size:14px;color:var(--accent);text-shadow:0 0 8px rgba(255,215,0,0.5)"></p>
+</section>
+
+<!-- プレイ画面 -->
+<section class="scr" id="s-play">
+<div class="top">
+  <span id="no">1/10</span>
+  <span class="hearts" id="hp"></span>
+  <span id="sc">0個</span>
+  <button id="mq" class="chip" style="flex:none;min-width:0;padding:4px 10px;margin:0">🎵</button>
+</div>
+<div class="bar"><i id="tb"></i></div>
+
+<div class="q-box" id="qc">
+  <div class="ghost-avatar" id="g-icon">👻</div>
+  <div class="tag" id="tg">1F メインロビー</div>
+  <div class="word" id="wd">5 + 3 = ?</div>
+  <div class="hint" id="hn">ストロボを焚いてオバキュームで吸い取れ！</div>
+</div>
+
+<div class="ch" id="ch"></div>
+<div class="fb" id="fb"></div>
+<button class="big" id="nx" style="display:none">つぎのエレベーターへ ▶</button>
+</section>
+
+<!-- リザルト画面 -->
+<section class="scr" id="s-end">
+<div class="stars" id="st"></div>
+<div class="score" id="rs">0個GET</div>
+<p class="sub" id="rm"></p>
+
+<div class="card" id="ms" style="display:none">
+  <h3>捕獲失敗したオバケ（まちがえた問題）</h3>
+  <div id="ml"></div>
+</div>
+
+<button class="big" id="again">もう一度フロア探索</button>
+<button class="chip" id="home" style="flex:none;text-align:center;padding:14px;border-radius:18px">ロビーへ戻る</button>
+</section>
+
+</div>
+
+<script>
+// 各フロア（6つ）ごとのテーマ定義
+const FLOOR_THEMES = {
+  "10_easy": {
+    name: "1F 🛎️ メインロビー",
+    desc: "エントランスホール",
+    ghosts: ["👻", "🐕", "🧹"], // グーラ、オバケ犬
+    baseColor: "#ffd700",
+    bgmSpeed: 210,
+    bgmPitch: 0
+  },
+  "10_normal": {
+    name: "2F 🍽️ レストラン",
+    desc: "シェフ・ソウルズの厨房",
+    ghosts: ["🍳", "🍖", "🍷", "🍕"], // シェフオバケ
+    baseColor: "#ff1744",
+    bgmSpeed: 190,
+    bgmPitch: 2
+  },
+  "10_hard": {
+    name: "3F 🛍️ ショッピングモール",
+    desc: "怪しいブティック＆ショップ",
+    ghosts: ["🛍️", "💎", "🕶️", "🎩"], // オバケ警備員・マダム
+    baseColor: "#e040fb",
+    bgmSpeed: 175,
+    bgmPitch: -2
+  },
+  "9_easy": {
+    name: "4F 🎹 コンサートホール",
+    desc: "アマーデウスの演奏ステージ",
+    ghosts: ["🎹", "🎼", "🎻", "🎺"], // ピアニストオバケ
+    baseColor: "#00e5ff",
+    bgmSpeed: 160,
+    bgmPitch: 4
+  },
+  "9_normal": {
+    name: "5F 👑 スイートルーム",
+    desc: "高級客室＆ラウンジ",
+    ghosts: ["🛎️", "🛋️", "🔑", "👑"], // メイドオバケ
+    baseColor: "#ffab40",
+    bgmSpeed: 180,
+    bgmPitch: 1
+  },
+  "9_hard": {
+    name: "6F 🏰 キャッスルエリア",
+    desc: "ホンモー王の騎士の間",
+    ghosts: ["⚔️", "🛡️", "🏰", "👁️", "👑"], // 騎士オバケ・キングテレサ
+    baseColor: "#00ff66",
+    bgmSpeed: 145,
+    bgmPitch: -4
+  }
+};
+
+const AREA_NAMES = {
+  "10_easy": "1F 🛎️ メインロビー",
+  "10_normal": "2F 🍽️ レストラン",
+  "10_hard": "3F 🛍️ ショッピングモール",
+  "9_easy": "4F 🎹 コンサートホール",
+  "9_normal": "5F 👑 スイートルーム",
+  "9_hard": "6F 🏰 キャッスルエリア"
+};
+
+const $=id=>document.getElementById(id);
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+
+let G="10_easy", Q=[], i=0, score=0, lives=3, combo=0, miss=[], t=12, tm=null, lock=false;
+
+function bestGet(g){
+  try{return JSON.parse(localStorage.getItem("math-mansion3-bests")||"{}")[g]||0}catch(e){return 0}
+}
+
+function bestSet(v){
+  try{
+    const o=JSON.parse(localStorage.getItem("math-mansion3-bests")||"{}");
+    o[G]=v;
+    localStorage.setItem("math-mansion3-bests",JSON.stringify(o));
+  }catch(e){}
+}
+
+function show(id){document.querySelectorAll(".scr").forEach(e=>e.classList.toggle("on",e.id===id))}
+
+/* 数検10級問題生成 */
+function gen10(level) {
+  if (level === "easy") {
+    const type = Math.floor(Math.random() * 5);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 5) + 1;
+      const b = Math.floor(Math.random() * (9 - a)) + 1;
+      const ans = a + b;
+      return { q: `${a} + ${b} = ?`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 8) + 2;
+      const b = Math.floor(Math.random() * (a - 1)) + 1;
+      const ans = a - b;
+      return { q: `${a} - ${b} = ?`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 2) {
+      const start = Math.floor(Math.random() * 6) + 1;
+      let arr = [start, start + 1, start + 2, start + 3];
+      const pos = Math.floor(Math.random() * 4);
+      const ans = arr[pos];
+      arr[pos] = "❓";
+      return { q: arr.join(" , "), ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 3) {
+      const a = Math.floor(Math.random() * 8) + 1;
+      const ans = 10 - a;
+      return { q: `${a} に あと いくつで 10 ？`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else {
+      const a = Math.floor(Math.random() * 3) + 1;
+      const b = Math.floor(Math.random() * 3) + 1;
+      const c = Math.floor(Math.random() * 3) + 1;
+      const ans = a + b + c;
+      return { q: `${a} + ${b} + ${c} = ?`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    }
+  } else if (level === "normal") {
+    const type = Math.floor(Math.random() * 5);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 8) + 4;
+      const b = Math.floor(Math.random() * 8) + 4;
+      const ans = a + b;
+      return { q: `${a} + ${b} = ?`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 8) + 11;
+      const b = Math.floor(Math.random() * 8) + 2;
+      const ans = a - b;
+      return { q: `${a} - ${b} = ?`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 2) {
+      const a = Math.floor(Math.random() * 5) + 2;
+      const b = Math.floor(Math.random() * 5) + 2;
+      const c = Math.floor(Math.random() * 4) + 1;
+      const ans = a + b - c;
+      return { q: `${a} + ${b} - ${c} = ?`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 3) {
+      const a = Math.floor(Math.random() * 6) + 10;
+      const b = Math.floor(Math.random() * 5) + 3;
+      const ans = a - b;
+      return { q: `キャンディが ${a}こ。${b}こ たべると のこりは？`, ans: ans, dummy: [ans + 1, ans - 1, a + b] };
+    } else {
+      const a = Math.floor(Math.random() * 5) + 8;
+      const b = Math.floor(Math.random() * 4) + 3;
+      const diff = a - b;
+      return { 
+        q: `赤い玉 ${a}こ、青い玉 ${b}こ。どちらが いくつ多い？`, 
+        ans: `赤い玉が ${diff}こ`, 
+        dummy: [`青い玉が ${diff}こ`, `赤い玉が ${diff + 1}こ`, `青い玉が ${diff + 1}こ`] 
+      };
+    }
+  } else {
+    const type = Math.floor(Math.random() * 5);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 6) + 5;
+      const b = Math.floor(Math.random() * 4) + 3;
+      const ans = a + b;
+      return { q: `宝石が${a}個あります。${b}個みつけると ぜんぶで何個？`, ans: ans, dummy: [ans + 1, ans - 1, a - b] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 30) + 20;
+      const b = Math.floor(Math.random() * 20) + 10;
+      const ans = a + b;
+      return { q: `${a} + ${b} = ?`, ans: ans, dummy: [ans + 10, ans - 10, ans + 2] };
+    } else if (type === 2) {
+      const shapes = [{name:"さんかくけい", c:3}, {name:"しかくけい", c:4}, {name:"ごかくけい", c:5}];
+      const s = shapes[Math.floor(Math.random() * shapes.length)];
+      return { q: `${s.name}の かど(角)は いくつ？`, ans: s.c, dummy: [s.c + 1, s.c - 1, s.c + 2] };
+    } else if (type === 3) {
+      const h = Math.floor(Math.random() * 8) + 1;
+      return { q: `短い針が${h}と${h+1}の間、長い針が6をさす時刻は？`, ans: `${h}時はん`, dummy: [`${h}時`, `${h+1}時`, `${h}時15分`] };
+    } else {
+      const shapes = [{name:"しかくけい", c:4}, {name:"さんかくけい", c:3}];
+      const s = shapes[Math.floor(Math.random() * shapes.length)];
+      return { q: `${s.name}の へん(辺)の かずは？`, ans: s.c, dummy: [s.c + 1, s.c - 1, s.c + 2] };
+    }
+  }
+}
+
+/* 数検9級問題生成 */
+function gen9(level) {
+  if (level === "easy") {
+    const type = Math.floor(Math.random() * 5);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 5) + 2;
+      const b = Math.floor(Math.random() * 9) + 1;
+      const ans = a * b;
+      return { q: `${a} × ${b} = ?`, ans: ans, dummy: [ans + a, ans - 1, ans + 2] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 9) + 1;
+      const ans = a * 10;
+      return { q: `10 × ${a} = ?`, ans: ans, dummy: [ans + 10, ans - 10, ans + 5] };
+    } else if (type === 2) {
+      const a = Math.floor(Math.random() * 4) + 1;
+      const b = Math.floor(Math.random() * 4) + 1;
+      const ans = a + b;
+      return { q: `${a}cm + ${b}cm = ? cm`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else if (type === 3) {
+      const b = Math.floor(Math.random() * 8) + 2;
+      const a = Math.floor(Math.random() * 8) + 2;
+      const ans = a;
+      return { q: `❓ × ${b} = ${a * b}`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    } else {
+      const a = Math.floor(Math.random() * 4) + 2;
+      const b = Math.floor(Math.random() * 4) + 2;
+      const c = Math.floor(Math.random() * 10) + 1;
+      const ans = a * b + c;
+      return { q: `${a} × ${b} + ${c} = ?`, ans: ans, dummy: [ans + 2, ans - 2, ans + 5] };
+    }
+  } else if (level === "normal") {
+    const type = Math.floor(Math.random() * 5);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 4) + 6;
+      const b = Math.floor(Math.random() * 4) + 6;
+      const ans = a * b;
+      return { q: `${a} × ${b} = ?`, ans: ans, dummy: [ans + a, ans - b, ans + 2] };
+    } else if (type === 1) {
+      const m = Math.floor(Math.random() * 6) + 1;
+      const cm = m * 100;
+      return { q: `${m}m = ? cm`, ans: cm, dummy: [cm / 10, cm + 10, cm + 100] };
+    } else if (type === 2) {
+      const h = Math.floor(Math.random() * 3) + 1;
+      const m = h * 60;
+      return { q: `${h}時間 = ? 分`, ans: m, dummy: [m - 10, m + 20, m + 60] };
+    } else if (type === 3) {
+      const kg = Math.floor(Math.random() * 4) + 1;
+      const g = kg * 1000;
+      return { q: `${kg}kg = ? g`, ans: g, dummy: [g / 10, g + 100, g + 1000] };
+    } else {
+      const h = Math.floor(Math.random() * 5) + 1;
+      const t = Math.floor(Math.random() * 9) + 1;
+      const o = Math.floor(Math.random() * 9) + 1;
+      const ans = h * 100 + t * 10 + o;
+      return { q: `100が${h}こ、10が${t}こ、1が${o}こで？`, ans: ans, dummy: [ans + 10, ans - 10, ans + 100] };
+    }
+  } else {
+    const type = Math.floor(Math.random() * 6);
+    if (type === 0) {
+      const num = Math.floor(Math.random() * 6) + 3;
+      const price = Math.floor(Math.random() * 5) + 4;
+      const ans = num * price;
+      return { q: `1こ${price}gのコインを ${num}こ 集めると いくら？`, ans: ans, dummy: [ans + price, ans - price, ans + 2] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 40) + 50;
+      const b = Math.floor(Math.random() * 30) + 15;
+      const ans = a - b;
+      return { q: `${a} - ${b} = ?`, ans: ans, dummy: [ans + 10, ans - 10, ans + 2] };
+    } else if (type === 2) {
+      const m = Math.floor(Math.random() * 3) + 1;
+      const cm = Math.floor(Math.random() * 50) + 10;
+      const ans = m * 100 + cm;
+      return { q: `${m}m ${cm}cm = ? cm`, ans: ans, dummy: [ans - 10, ans + 10, ans + 100] };
+    } else if (type === 3) {
+      const startH = Math.floor(Math.random() * 4) + 1;
+      const addM = 30;
+      return { q: `${startH}時00分 から 30分後の 時刻は？`, ans: `${startH}時30分`, dummy: [`${startH+1}時00分`, `${startH}時20分`, `${startH}時45分`] };
+    } else if (type === 4) {
+      const w1 = Math.floor(Math.random() * 300) + 200;
+      const w2 = Math.floor(Math.random() * 300) + 100;
+      const ans = w1 + w2;
+      return { q: `${w1}g のオバケと ${w2}g のオバケ 合わせると？`, ans: `${ans}g`, dummy: [`${ans+50}g`, `${ans-50}g`, `${ans+100}g`] };
+    } else {
+      const pay = 100;
+      const item = Math.floor(Math.random() * 6) * 10 + 30;
+      const ans = pay - item;
+      return { q: `${pay}g はらって ${item}g の品物をかった おつりは？`, ans: `${ans}g`, dummy: [`${ans+10}g`, `${ans-10}g`, `${ans+5}g`] };
+    }
+  }
+}
+
+/* 数検9級問題生成 */
+function gen9(level) {
+  if (level === "easy") {
+    const type = Math.floor(Math.random() * 3);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 5) + 2;
+      const b = Math.floor(Math.random() * 9) + 1;
+      const ans = a * b;
+      return { q: `${a} × ${b} = ?`, ans: ans, dummy: [ans + a, ans - 1, ans + 2] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 9) + 1;
+      const ans = a * 10;
+      return { q: `10 × ${a} = ?`, ans: ans, dummy: [ans + 10, ans - 10, ans + 5] };
+    } else {
+      const a = Math.floor(Math.random() * 4) + 1;
+      const b = Math.floor(Math.random() * 4) + 1;
+      const ans = a + b;
+      return { q: `${a}cm + ${b}cm = ? cm`, ans: ans, dummy: [ans + 1, ans - 1, ans + 2] };
+    }
+  } else if (level === "normal") {
+    const type = Math.floor(Math.random() * 3);
+    if (type === 0) {
+      const a = Math.floor(Math.random() * 4) + 6;
+      const b = Math.floor(Math.random() * 4) + 6;
+      const ans = a * b;
+      return { q: `${a} × ${b} = ?`, ans: ans, dummy: [ans + a, ans - b, ans + 2] };
+    } else if (type === 1) {
+      const m = Math.floor(Math.random() * 6) + 1;
+      const cm = m * 100;
+      return { q: `${m}m = ? cm`, ans: cm, dummy: [cm / 10, cm + 10, cm + 100] };
+    } else {
+      const h = Math.floor(Math.random() * 3) + 1;
+      const m = h * 60;
+      return { q: `${h}時間 = ? 分`, ans: m, dummy: [m - 10, m + 20, m + 60] };
+    }
+  } else {
+    const type = Math.floor(Math.random() * 3);
+    if (type === 0) {
+      const num = Math.floor(Math.random() * 6) + 3;
+      const price = Math.floor(Math.random() * 5) + 4;
+      const ans = num * price;
+      return { q: `1こ${price}Gのコインを ${num}こ 集めると いくら？`, ans: ans, dummy: [ans + price, ans - price, ans + 2] };
+    } else if (type === 1) {
+      const a = Math.floor(Math.random() * 40) + 50;
+      const b = Math.floor(Math.random() * 30) + 15;
+      const ans = a - b;
+      return { q: `${a} - ${b} = ?`, ans: ans, dummy: [ans + 10, ans - 10, ans + 2] };
+    } else {
+      const m = Math.floor(Math.random() * 3) + 1;
+      const cm = Math.floor(Math.random() * 50) + 10;
+      const ans = m * 100 + cm;
+      return { q: `${m}m ${cm}cm = ? cm`, ans: ans, dummy: [ans - 10, ans + 10, ans + 100] };
+    }
+  }
+}
+
+// ホーム画面上の全フロアボタンのハイスコア表示を更新
+function updateHomeUI() {
+  document.querySelectorAll("#g-row .chip").forEach(c => {
+    const key = c.dataset.g;
+    const b = bestGet(key);
+    const theme = FLOOR_THEMES[key];
+    
+    c.innerHTML = `<span>${theme.name}</span><small>${theme.desc} | ${b ? '🏆 💎' + b + '個' : '記録なし'}</small>`;
+  });
+  
+  const currentBest = bestGet(G);
+  $("best-score").textContent = currentBest ? `🏆 ${FLOOR_THEMES[G].name} 最高記録: 💎${currentBest}個` : `🏆 ${FLOOR_THEMES[G].name}: まだ記録がありません`;
+}
+
+document.querySelectorAll("#g-row .chip").forEach(c => {
+  c.onclick = () => {
+    document.querySelectorAll("#g-row .chip").forEach(x => x.classList.remove("sel"));
+    c.classList.add("sel");
+    G = c.dataset.g;
+    updateHomeUI();
+    start();
+  };
+});
+
+$("again").onclick = start;
+$("home").onclick = () => { 
+  bgmStop(); 
+  document.body.removeAttribute("data-floor");
+  show("s-start"); 
+  updateHomeUI(); 
+};
+
+function start() {
+  audioInit(); sfx("click");
+  // フロア専用テーマ属性を設定（CSSグラフィック変化）
+  document.body.setAttribute("data-floor", G);
+  bgmStart();
+  
+  Q = [];
+  const [grade, level] = G.split("_");
+  for (let k = 0; k < 10; k++) {
+    let qData = grade === "10" ? gen10(level) : gen9(level);
+    Q.push(qData);
+  }
+  i = 0; score = 0; lives = 3; combo = 0; miss = [];
+  show("s-play");
+  ask();
+}
+
+function hearts() { $("hp").textContent = "💚".repeat(lives) + "🖤".repeat(3 - lives); }
+
+function ask() {
+  lock = false; const q = Q[i]; hearts();
+  const theme = FLOOR_THEMES[G];
+  $("no").textContent = (i + 1) + "/10";
+  $("sc").textContent = score + "個";
+  $("fb").textContent = ""; $("fb").className = "fb"; $("nx").style.display = "none";
+  $("tg").textContent = theme.name;
+  $("wd").textContent = q.q;
+  
+  const gElem = $("g-icon");
+  gElem.textContent = theme.ghosts[Math.floor(Math.random() * theme.ghosts.length)];
+  gElem.classList.remove("sucking");
+  
+  let opts = [q.ans, ...q.dummy.slice(0, 3)];
+  opts = Array.from(new Set(opts));
+  while(opts.length < 4) opts.push(q.ans + opts.length + 1);
+  opts = sh(opts);
+
+  const box = $("ch"); box.innerHTML = "";
+  opts.forEach(o => {
+    const b = document.createElement("button");
+    b.textContent = o;
+    b.onclick = () => answer(b, String(o) === String(q.ans), box);
+    box.appendChild(b);
+  });
+
+  t = 12; tick(); clearInterval(tm);
+  tm = setInterval(() => {
+    t -= 0.1; tick();
+    if (t <= 0) { clearInterval(tm); answer(null, false, box); }
+  }, 100);
+}
+
+function tick() {
+  const b = $("tb"); b.style.width = Math.max(t, 0) * 8.33 + "%";
+  b.style.background = t > 6 ? "#00ff66" : t > 3 ? "#ffd700" : "#ff1744";
+}
+
+function answer(btn, ok, box) {
+  if (lock) return; lock = true; clearInterval(tm);
+  const q = Q[i];
+  box.querySelectorAll("button").forEach(b => {
+    b.disabled = true;
+    if (String(b.textContent) === String(q.ans)) b.classList.add("ok");
+  });
+
+  const fb = $("fb");
+  const gElem = $("g-icon");
+
+  if (ok) {
+    combo++; score++;
+    gElem.classList.add("sucking");
+    fb.className = "fb ok pop";
+    fb.textContent = "⚡ ストロボ！オバキューム吸い込み完了！" + (combo > 1 ? ` (${combo}連たたきつけ！)` : "");
+    sfx("vacuum"); 
+    // フロアごとに異なるパルス振動パターン
+    const floorVib = G === "9_hard" ? [50, 30, 80, 40, 100] : [30, 40, 20, 60, 20, 80];
+    vib(floorVib);
+  } else {
+    combo = 0; lives--; miss.push(q);
+    if (btn) btn.classList.add("ng");
+    $("qc").classList.add("shake"); setTimeout(() => $("qc").classList.remove("shake"), 400);
+    fb.className = "fb ng";
+    fb.textContent = (btn ? "❌ オバケの襲撃！ダメージ！" : "⏰ タイムオーバー！") + " 答え: " + q.ans;
+    sfx(btn ? "ng" : "time"); 
+    vib([100, 50, 100]);
+  }
+  $("sc").textContent = score + "個"; hearts();
+
+  const n = $("nx"); n.style.display = "block"; n.onclick = nextQ;
+  if (ok) setTimeout(() => { if (lock && Q[i] === q && n.style.display === "block") nextQ(); }, 1100);
+}
+
+function nextQ() {
+  if (!lock) return; lock = false; $("nx").style.display = "none"; i++;
+  if (lives <= 0 || i >= Q.length) finish(); else ask();
+}
+
+function finish() {
+  clearInterval(tm); show("s-end");
+  const cleared = lives > 0;
+  const stars = !cleared ? 0 : miss.length === 0 ? 3 : miss.length <= 2 ? 2 : 1;
+  $("st").textContent = "🌟".repeat(stars) + "🌑".repeat(3 - stars);
+  bgmStop(); sfx(cleared ? "win" : "lose");
+  
+  $("rs").textContent = "💎" + score + "個 GET!";
+  const b = bestGet(G);
+  const theme = FLOOR_THEMES[G];
+  let msg = cleared ? `${theme.name} クリア！ (正解率: ${score}/10)` : "オバケに負けて絵画に閉じ込められた…";
+  if (score > b) { 
+    bestSet(score); 
+    msg += `\n🎉 ${theme.name} のハイスコア更新！`; 
+  } else {
+    msg += `\n${theme.name} の最高記録: 💎${b}個`;
+  }
+  $("rm").style.whiteSpace = "pre-line"; $("rm").textContent = msg;
+
+  const l = $("ml"); l.innerHTML = ""; $("ms").style.display = miss.length ? "block" : "none";
+  miss.forEach(m => {
+    const d = document.createElement("div"); d.className = "miss";
+    d.innerHTML = `<span>👻 ${m.q}</span><span>正解: ${m.ans}</span>`;
+    l.appendChild(d);
+  });
+}
+
+/* サウンド＆オバキュームSE・フロア連動BGM（ルイージマンション3風） */
+const S = { bgm: true, se: true, vb: true };
+let AC = null, mg = null, bgmT = null, bgmOn = false, stp = 0;
+
+function audioInit() {
+  try {
+    if (!AC) {
+      AC = new (window.AudioContext || window.webkitAudioContext)();
+      mg = AC.createGain(); mg.gain.value = 0.6; mg.connect(AC.destination);
+    }
+    if (AC.state === "suspended") AC.resume();
+  } catch (e) {}
+}
+
+function tone(f, d, type, vol, when) {
+  if (!AC) return;
+  try {
+    const t0 = AC.currentTime + (when || 0), o = AC.createOscillator(), g = AC.createGain();
+    o.type = type || "sine"; o.frequency.setValueAtTime(f, t0);
+    g.gain.setValueAtTime(.0001, t0); g.gain.exponentialRampToValueAtTime(vol || .2, t0 + .01);
+    g.gain.exponentialRampToValueAtTime(.0001, t0 + d);
+    o.connect(g); g.connect(mg); o.start(t0); o.stop(t0 + d + .05);
+  } catch (e) {}
+}
+
+function noise(d, vol, when) {
+  if (!AC) return;
+  try {
+    const t0 = AC.currentTime + (when || 0), bs = AC.sampleRate * d, b = AC.createBuffer(1, bs, AC.sampleRate), data = b.getChannelData(0);
+    for (let i = 0; i < bs; i++) data[i] = Math.random() * 2 - 1;
+    const src = AC.createBufferSource(), g = AC.createGain();
+    src.buffer = b;
+    g.gain.setValueAtTime(vol || 0.1, t0);
+    g.gain.exponentialRampToValueAtTime(0.0001, t0 + d);
+    src.connect(g); g.connect(mg); src.start(t0); src.stop(t0 + d + .02);
+  } catch (e) {}
+}
+
+function vib(p) { if (!S.vb) return; try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+
+function sfx(k) {
+  if (!S.se || !AC) return; audioInit();
+  if (k === "click") {
+    tone(800, .03, "square", .15);
+    tone(1500, .05, "sine", .1, 0.02);
+    vib(12);
+  } else if (k === "vacuum") { 
+    tone(1200, .08, "triangle", .3); 
+    noise(0.4, 0.25, 0.05); 
+    tone(200, .2, "sawtooth", .3, 0.08); 
+    tone(400, .15, "sine", .3, 0.25);
+    tone(800, .25, "square", .3, 0.35); 
+  } else if (k === "ng") { 
+    tone(120, .25, "sawtooth", .35);
+    tone(90, .35, "sawtooth", .35, 0.08);
+    noise(0.2, 0.2, 0.05);
+  } else if (k === "win") { 
+    [523, 659, 783, 1046, 987, 1046].forEach((f, idx) => tone(f, 0.18, "triangle", 0.25, idx * 0.09));
+  } else if (k === "lose") {
+    [180, 160, 140, 110].forEach((f, idx) => tone(f, 0.28, "sawtooth", 0.25, idx * 0.14));
+  }
+}
+
+// フロアごとにテンポやピッチがダイナミックに変わるBGM
+function bgmStart() {
+  if (!S.bgm || bgmOn || !AC) return;
+  bgmOn = true; stp = 0;
+  const theme = FLOOR_THEMES[G] || FLOOR_THEMES["10_easy"];
+  const pShift = theme.bgmPitch || 0;
+  
+  const baseMel = [146, 174, 164, 155, 146, null, 174, 220, 207, 196, 174, null, 155, 146, null, null];
+  const mel = baseMel.map(f => f ? f * Math.pow(2, pShift/12) : null);
+
+  bgmT = setInterval(() => {
+    const f = mel[stp % mel.length];
+    if (f) {
+      tone(f, 0.18, "triangle", 0.09);
+      tone(f * 0.5, 0.22, "sawtooth", 0.05);
+    }
+    if (stp % 4 === 2) noise(0.04, 0.03); 
+    stp++;
+  }, theme.bgmSpeed);
+}
+
+function bgmStop() { clearInterval(bgmT); bgmOn = false; }
+
+function setA(k, v) {
+  S[k] = v;
+  document.querySelectorAll('[data-a="' + k + '"]').forEach(c => c.classList.toggle("sel", v));
+  if (k === "bgm") {
+    $("mq").textContent = v ? "🎵" : "🔇";
+    if (!v) bgmStop();
+    else if ($("s-play").classList.contains("on")) { audioInit(); bgmStart(); }
+  }
+  if (k === "vb" && v) vib([20, 30, 20]);
+  if (k === "se" && v) { audioInit(); sfx("click"); }
+}
+
+document.querySelectorAll("[data-a]").forEach(c => c.onclick = () => setA(c.dataset.a, !S[c.dataset.a]));
+$("mq").onclick = () => setA("bgm", !S.bgm);
+
+updateHomeUI();
+</script>
+</body>
+</html>
